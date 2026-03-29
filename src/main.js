@@ -1,4 +1,4 @@
-const ASSET_RELEASE_URL = "/game.tar.gz";
+const ASSET_RELEASE_URL = "https://github.com/joncodeofficial/gta-vicecity-wasm/releases/download/v1.0.0/game.tar.gz";
 
 const LEGACY_SCRIPT_SOURCES = [
   "/GamepadEmulator.js",
