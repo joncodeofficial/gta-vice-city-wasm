@@ -1,10 +1,12 @@
 const ASSET_RELEASE_URL = "https://github.com/joncodeofficial/gta-vicecity-wasm/releases/download/v1.0.0/game.tar.gz";
 
+const BASE = import.meta.env.BASE_URL;
+
 const LEGACY_SCRIPT_SOURCES = [
-  "/GamepadEmulator.js",
-  "/jsdos-cloud-sdk.js",
-  "/idbfs.js",
-  "/game.js",
+  `${BASE}GamepadEmulator.js`,
+  `${BASE}jsdos-cloud-sdk.js`,
+  `${BASE}idbfs.js`,
+  `${BASE}game.js`,
 ];
 
 function isLocalDevEnvironment() {
@@ -229,7 +231,7 @@ async function initSetupFlow() {
     progressBar.style.width = "0%";
     setPlayAvailability(false);
 
-    const worker = new Worker("/extract-worker.js");
+    const worker = new Worker(`${BASE}extract-worker.js`);
     worker.onerror = (error) => {
       console.error("[worker error]", error);
       showError(`Worker error: ${error.message}`);
@@ -311,7 +313,7 @@ async function initSetupFlow() {
     }
 
     console.log("[setup] registering SW...");
-    await navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" });
+    await navigator.serviceWorker.register(`${BASE}sw.js`, { updateViaCache: "none" });
     await navigator.serviceWorker.ready;
     console.log("[setup] SW ready");
 
