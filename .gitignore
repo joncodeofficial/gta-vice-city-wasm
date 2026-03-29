@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Game archive — distributed via GitHub Releases
+game.tar.gz
+public/game.tar.gz
