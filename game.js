@@ -71,7 +71,7 @@ const translations = {
         enterKey: "enter your key",
         clickToContinue: "Click to continue...",
         enterJsDosKey: "Enter js-dos key (5 len)",
-        portBy: "HTML5 port by:",
+        portBy: "WASM engine by:",
         demoOffDisclaimer: "",
         configLanguage: "Language:",
         configCheats: "Cheats (F3)",
@@ -532,9 +532,10 @@ disclaimerText.textContent = t('disclaimer');
 const disclaimerSources = document.getElementById('disclaimer-sources');
 disclaimerSources.textContent = t('disclaimerSources');
 const developedBy = document.querySelector('.developed-by');
-developedBy.innerHTML += t('ruTranslate');
+const ruTranslate = t('ruTranslate');
+if (ruTranslate) developedBy.innerHTML += ruTranslate;
 const portBy = document.getElementById('port-by');
-portBy.textContent = t('portBy');
+if (portBy) portBy.textContent = t('portBy');
 
 function showWasted() {
     const wastedContainer = document.querySelector('.wasted-container');
