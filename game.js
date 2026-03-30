@@ -53,26 +53,22 @@ async function resumeAudioContexts() {
 }
 const translations = {
     en: {
-        clickToPlayDemo: "Click to play",
-        clickToPlayFull: "Click to play",
+        clickToPlay: "Start to play",
         invalidKey: "invalid key",
         checking: "checking...",
         cloudSaves: "Cloud saves:",
         enabled: "enabled",
         disabled: "disabled",
-        playDemoText: "This build uses the complete game archive. Import the file and play locally in your browser.",
         disclaimer: "DISCLAIMER:",
         disclaimerSources: "This game is based on an open source version of GTA: Vice City. It is not a commercial release and is not affiliated with Rockstar Games.",
         disclaimerCheckbox: "",
         disclaimerPrompt: "",
         cantContinuePlaying: "",
-        demoAlert: "",
         downloading: "Downloading",
         enterKey: "enter your key",
         clickToContinue: "Click to continue...",
         enterJsDosKey: "Enter js-dos key (5 len)",
         portBy: "WASM engine by:",
-        demoOffDisclaimer: "",
         configLanguage: "Language:",
         configCheats: "Cheats (F3)",
         configFullscreen: "Fullscreen",
@@ -94,22 +90,14 @@ function updateAllTranslations() {
     
     const clickToPlayButton = document.getElementById('click-to-play-button');
     if (clickToPlayButton) {
-        clickToPlayButton.textContent = t('clickToPlayFull');
+        clickToPlayButton.textContent = t('clickToPlay');
     }
-    
-    const demoOffDisclaimer = document.getElementById('demo-off-disclaimer');
-    if (demoOffDisclaimer) {
-        demoOffDisclaimer.textContent = "";
-    }
-    
+
     const cloudSavesLink = document.getElementById('cloud-saves-link');
     if (cloudSavesLink) cloudSavesLink.textContent = t('cloudSaves');
-    
+
     const cloudSavesStatus = document.getElementById('cloud-saves-status');
     if (cloudSavesStatus) cloudSavesStatus.textContent = t('enterKey');
-    
-    const playDemoText = document.getElementById('play-demo-text');
-    if (playDemoText) playDemoText.textContent = t('playDemoText');
     
     const disclaimerText = document.getElementById('disclaimer-text');
     if (disclaimerText) disclaimerText.textContent = t('disclaimer');
@@ -515,18 +503,14 @@ if (keyInput && keyStatus) {
 }
 
 const clickToPlayButton = document.getElementById('click-to-play-button');
-clickToPlayButton.textContent = t('clickToPlayFull');
+clickToPlayButton.textContent = t('clickToPlay');
 if (!window.__gtaGameReady) {
     clickToPlayButton.classList.add('disabled');
     clickToPlayButton.disabled = true;
 }
-const demoOffDisclaimer = document.getElementById('demo-off-disclaimer');
-demoOffDisclaimer.textContent = "";
 const cloudSavesLink = document.getElementById('cloud-saves-link');
 if (cloudSavesLink) cloudSavesLink.textContent = t('cloudSaves');
 if (cloudSavesStatus) cloudSavesStatus.textContent = t('enterKey');
-const playDemoText = document.getElementById('play-demo-text');
-playDemoText.textContent = t('playDemoText');
 const disclaimerText = document.getElementById('disclaimer-text');
 disclaimerText.textContent = t('disclaimer');
 const disclaimerSources = document.getElementById('disclaimer-sources');

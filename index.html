@@ -8,8 +8,8 @@
     />
     <title>GTA: Vice City — WASM Port</title>
     <link rel="icon" type="image/webp" href="/gta-vicecity-wasm/icon.webp" />
-    <script type="module" crossorigin src="/gta-vicecity-wasm/assets/index-CIEdW8Fa.js"></script>
-    <link rel="stylesheet" crossorigin href="/gta-vicecity-wasm/assets/index-CfUsLIPQ.css">
+    <script type="module" crossorigin src="/gta-vicecity-wasm/assets/index-evcJqdvU.js"></script>
+    <link rel="stylesheet" crossorigin href="/gta-vicecity-wasm/assets/index-COlKtKjv.css">
   </head>
 
   <body
@@ -62,7 +62,10 @@
           <p
             class="mb-7 max-w-[38rem] text-left text-[1.05rem] leading-[1.7] text-[#94a7c6]"
           >
-            Import your <code>game.tar.gz</code> once — it's stored locally in your browser via OPFS and served by a Service Worker. No CDN, no external server, no recurring downloads. After the first import it works fully offline.
+            Import your <code>game.tar.gz</code> once — it's stored locally in
+            your browser via OPFS and served by a Service Worker. No CDN, no
+            external server, no recurring downloads. After the first import it
+            works fully offline.
           </p>
 
           <div
@@ -72,20 +75,22 @@
             <div id="storage-status" class="storage-status">
               Checking local game files…
             </div>
-            <h2 class="mb-[10px] text-[1.15rem] text-[#f8fbff]">
-              Setup
-            </h2>
+            <h2 class="mb-[10px] text-[1.15rem] text-[#f8fbff]">Setup</h2>
             <p class="mb-4 text-left text-[#94a7c6]">
               The imported archive is stored locally by this browser, so you can
               come back later without reimporting unless you want to replace it.
             </p>
 
             <div class="setup-actions-panel">
-              <a id="dl-link" class="dl-btn" href="#" download>Download game.tar.gz</a>
+              <a id="dl-link" class="dl-btn" href="#" download
+                >Download game.tar.gz</a
+              >
 
               <label class="file-picker" for="game-file-input">
                 <span class="file-picker-label">Select game.tar.gz</span>
-                <span id="selected-file-name" class="file-picker-name">No file selected</span>
+                <span id="selected-file-name" class="file-picker-name"
+                  >No file selected</span
+                >
               </label>
               <input
                 type="file"
@@ -93,14 +98,26 @@
                 class="hidden"
                 accept=".tar.gz,.gz,application/gzip"
               />
+
+              <button
+                id="reset-game-btn"
+                class="reset-btn hidden"
+                type="button"
+              >
+                Reset game data
+              </button>
             </div>
 
             <div id="setup-progress" class="mt-[14px] hidden">
               <div class="setup-progress-head">
                 <span class="setup-progress-title">Importing game.tar.gz</span>
-                <span id="setup-progress-percent" class="setup-progress-percent">0%</span>
+                <span id="setup-progress-percent" class="setup-progress-percent"
+                  >0%</span
+                >
               </div>
-              <p id="setup-progress-label" class="mb-2.5 text-[#94a7c6]">Preparing&hellip;</p>
+              <p id="setup-progress-label" class="mb-2.5 text-[#94a7c6]">
+                Preparing&hellip;
+              </p>
               <div class="prog-bar-wrap">
                 <div class="prog-bar-fill" id="setup-progress-bar"></div>
               </div>
@@ -178,38 +195,49 @@
           <div class="click-to-play my-[22px] mb-2">
             <button
               id="click-to-play-button"
-              class="inline-flex min-h-12 items-center justify-center rounded-[14px] bg-linear-to-br from-[#82aaff] to-[#72e4c7] px-[18px] text-[1rem] font-bold text-[#07111f] transition-transform duration-200 hover:-translate-y-px"
+              class="flex w-full min-h-12 items-center justify-center rounded-[14px] bg-linear-to-br from-[#82aaff] to-[#72e4c7] px-[18px] text-[1rem] font-bold text-[#07111f] transition-transform duration-200 hover:-translate-y-px"
             >
-              Click to play
+              Start to play
             </button>
-            <div
-              id="demo-off-disclaimer"
-              class="mt-2 text-[0.86rem] text-[#94a7c6]"
-            ></div>
           </div>
 
+          <section class="instructions-panel">
+            <h2>How to play</h2>
+            <ol class="instructions-list">
+              <li>
+                Use `Download archive` if you want the file directly from this
+                page.
+              </li>
+              <li>
+                Or use `Choose game.tar.gz` to select a file from your computer.
+              </li>
+              <li>
+                Wait for the import to finish and confirm the local storage
+                status above.
+              </li>
+              <li>Press `Start to play` and wait for the game data to load.</li>
+              <li>
+                You can import another local file later if you want to replace
+                the current one.
+              </li>
+            </ol>
+            <p class="instructions-note">
+              Recommended: use a modern desktop browser for the smoothest setup
+              and performance.
+            </p>
+          </section>
         </div>
 
         <div
           class="flex flex-col gap-[22px] rounded-[28px] border border-[rgba(159,195,255,0.16)] bg-[rgba(11,22,37,0.78)] p-[26px] text-left shadow-[0_28px_80px_rgba(0,0,0,0.35)] backdrop-blur-[20px] max-md:rounded-[22px] max-md:p-[18px]"
         >
           <div class="cover-panel">
-            <img class="cover-image" src="/gta-vicecity-wasm/cover.jpg" alt="Grand Theft Auto Vice City cover" />
+            <img
+              class="cover-image"
+              src="/gta-vicecity-wasm/cover.png"
+              alt="Grand Theft Auto Vice City cover"
+            />
           </div>
-
-          <section class="instructions-panel">
-            <h2>How to play</h2>
-            <ol class="instructions-list">
-              <li>Use `Download archive` if you want the file directly from this page.</li>
-              <li>Or use `Choose game.tar.gz` to select a file from your computer.</li>
-              <li>Wait for the import to finish and confirm the local storage status above.</li>
-              <li>Press `Click to play` and wait for the game data to load.</li>
-              <li>You can import another local file later if you want to replace the current one.</li>
-            </ol>
-            <p class="instructions-note">
-              Recommended: use a modern desktop browser for the smoothest setup and performance.
-            </p>
-          </section>
 
           <div
             class="disclaimer rounded-[18px] border border-[rgba(159,195,255,0.16)] bg-[rgba(255,255,255,0.025)] p-[18px] text-left leading-[1.7] text-[#94a7c6] max-md:p-[15px]"
@@ -227,11 +255,6 @@
                 target="_blank"
                 >github</a
               >)
-
-              <p id="play-demo-text" class="text-[#f7fbff]">
-                This build expects the complete game archive. Import the file
-                and play locally in your browser.
-              </p>
             </span>
           </div>
 
