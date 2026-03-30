@@ -19,7 +19,7 @@ Your imported data persists between sessions so you only need to import once unl
 
 - A modern desktop browser with WebAssembly + OPFS + Service Worker support
 - Recommended: Chrome 110+, Firefox 111+, or Safari 16.4+
-- The `game.tar.gz` game archive (~130 MB compressed)
+- The `game.tar.gz` game archive (~668 MB compressed)
 
 ## Running locally
 
