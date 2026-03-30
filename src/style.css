@@ -241,6 +241,38 @@ a:hover { color: #fff; }
   color: #030912;
 }
 
+/* Reset button — subtle danger */
+.reset-btn {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  background: transparent;
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.35);
+  box-shadow: none;
+}
+.reset-btn:hover {
+  background: rgba(255, 40, 112, 0.08);
+  border-color: rgba(255, 40, 112, 0.55);
+  color: #ff2870;
+  transform: translateY(-1px);
+}
+.reset-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Import bundled — ghost */
 .file-label {
   background: var(--surface-3);
@@ -481,7 +513,9 @@ a:hover { color: #fff; }
 .cover-image {
   display: block;
   width: 100%;
-  height: auto;
+  height: 600px;
+  object-fit: cover;
+  object-position: center top;
   transition: transform 0.4s ease, filter 0.4s ease;
 }
 .cover-panel:hover .cover-image {
