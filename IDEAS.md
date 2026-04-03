@@ -4,11 +4,6 @@
 
 - [ ] Compress assets with Brotli at extraction time — store compressed in OPFS and decompress when serving
 
-## Mobile
-
-- [ ] Improve touch control layout on small screens
-- [ ] Automatic landscape/portrait handling
-
 ## Features
 
 - [ ] Export/import saves — currently stored in IndexedDB and lost if the user clears browser storage
