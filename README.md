@@ -54,4 +54,4 @@ The game engine is based on the open-source reverse engineering project [re3/reV
 
 ## Disclaimer
 
-This is not a commercial release and is not affiliated with Rockstar Games or Take-Two Interactive. It is built on an open-source reimplementation of the game engine. You must own a legitimate copy of GTA: Vice City to use this software.
+This is not a commercial release and is not affiliated with Rockstar Games or Take-Two Interactive. It is built entirely on an open-source reimplementation of the game engine and does not include, distribute, or host any original game assets. You must own a legitimate copy of GTA: Vice City to use this software. All trademarks and copyrights belong to their respective owners.
