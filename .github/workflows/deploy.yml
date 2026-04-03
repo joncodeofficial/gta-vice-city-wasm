@@ -29,6 +29,8 @@ jobs:
 
       - name: Build
         run: pnpm build
+        env:
+          VITE_ASSET_URL: ${{ secrets.VITE_ASSET_URL }}
 
       - name: Deploy to prod branch
         uses: peaceiris/actions-gh-pages@v4
