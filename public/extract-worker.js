@@ -97,10 +97,26 @@ self.onmessage = async (event) => {
     const { file } = event.data;
     try {
         self.postMessage({ type: 'progress', phase: 'reading', pct: 0 });
-        const compressed = await file.arrayBuffer();
+        const reader = file.stream().getReader();
+        const chunks = [];
+        let loaded = 0;
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            loaded += value.byteLength;
+            const pct = Math.round((loaded / file.size) * 10);
+            self.postMessage({ type: 'progress', phase: 'reading', pct });
+        }
+        const compressed = new Uint8Array(loaded);
+        let readOffset = 0;
+        for (const chunk of chunks) {
+            compressed.set(chunk, readOffset);
+            readOffset += chunk.byteLength;
+        }
 
         self.postMessage({ type: 'progress', phase: 'decompressing', pct: 10 });
-        const tarBuffer = await decompressGzip(compressed);
+        const tarBuffer = await decompressGzip(compressed.buffer);
 
         self.postMessage({ type: 'progress', phase: 'extracting', pct: 30 });
         let total = 0;
