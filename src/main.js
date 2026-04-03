@@ -425,6 +425,17 @@ function initCanvasBindings() {
   });
 }
 
+function checkBrowserCompatibility() {
+  const missing = [];
+
+  if (!("serviceWorker" in navigator)) missing.push("Service Workers");
+  if (!("storage" in navigator) || !("getDirectory" in navigator.storage)) missing.push("OPFS");
+  if (typeof WebAssembly === "undefined") missing.push("WebAssembly");
+  if (typeof Worker === "undefined") missing.push("Web Workers");
+
+  return missing;
+}
+
 function initHostRedirectGuard() {
   try {
     // const host = window.parent.location.host;
@@ -441,6 +452,22 @@ function initHostRedirectGuard() {
 async function boot() {
   initCanvasBindings();
   initHostRedirectGuard();
+
+  const missing = checkBrowserCompatibility();
+  if (missing.length > 0) {
+    const storageStatus = document.getElementById("storage-status");
+    const errorBox = document.getElementById("setup-error");
+    if (storageStatus) {
+      storageStatus.textContent = "Browser not supported";
+      storageStatus.dataset.state = "error";
+    }
+    if (errorBox) {
+      errorBox.style.display = "block";
+      errorBox.textContent = `Your browser is missing required features: ${missing.join(", ")}. Please use Chrome 110+, Firefox 111+, or Safari 16.4+.`;
+    }
+    return;
+  }
+
   await initSetupFlow();
   await loadLegacyScripts();
 }

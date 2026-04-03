@@ -199,6 +199,12 @@ a:hover { color: #fff; }
   background: rgba(255, 183, 64, 0.06);
 }
 
+.storage-status[data-state="error"] {
+  border-color: rgba(255, 80, 80, 0.30);
+  color: #ff7b7b;
+  background: rgba(255, 80, 80, 0.06);
+}
+
 /* ─── Setup action buttons ───────────────────────────────────── */
 .setup-actions-panel {
   display: grid;
