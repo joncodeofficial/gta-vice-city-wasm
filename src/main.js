@@ -449,9 +449,20 @@ function initHostRedirectGuard() {
   }
 }
 
+function initOrientationLock() {
+  const observer = new MutationObserver(() => {
+    if (document.body.classList.contains("gameIsStarted")) {
+      observer.disconnect();
+      screen.orientation?.lock("landscape").catch(() => {});
+    }
+  });
+  observer.observe(document.body, { attributeFilter: ["class"] });
+}
+
 async function boot() {
   initCanvasBindings();
   initHostRedirectGuard();
+  initOrientationLock();
 
   const missing = checkBrowserCompatibility();
   if (missing.length > 0) {

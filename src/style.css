@@ -735,6 +735,39 @@ select:focus {
   justify-content: end;
   align-items: center;
 }
+.rotate-overlay {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .gameIsStarted[data-is-touch="1"] .rotate-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 10px 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #f6fbff;
+    font-size: 0.9rem;
+    backdrop-filter: blur(6px);
+  }
+}
+
+.rotate-overlay-icon {
+  font-size: 1.2rem;
+  animation: spin-hint 2s ease-in-out infinite;
+}
+
+@keyframes spin-hint {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+
 .wasted-container {
   position: absolute;
   top: 0;
