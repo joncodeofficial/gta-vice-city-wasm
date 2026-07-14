@@ -1,4 +1,3 @@
-const cloudSavesStatus = document.getElementById('cloud-saves-status');
 var statusElement = document.getElementById("status");
 var progressElement = document.getElementById("progress");
 var spinnerElement = document.getElementById('spinner');
@@ -54,20 +53,10 @@ async function resumeAudioContexts() {
 const translations = {
     en: {
         clickToPlay: "Start to play",
-        invalidKey: "invalid key",
-        checking: "checking...",
-        cloudSaves: "Cloud saves:",
-        enabled: "enabled",
-        disabled: "disabled",
         disclaimer: "DISCLAIMER:",
         disclaimerSources: "This game is based on an open source version of GTA: Vice City. It is not a commercial release and is not affiliated with Rockstar Games.",
-        disclaimerCheckbox: "",
-        disclaimerPrompt: "",
-        cantContinuePlaying: "",
         downloading: "Downloading",
-        enterKey: "enter your key",
         clickToContinue: "Click to continue...",
-        enterJsDosKey: "Enter js-dos key (5 len)",
         portBy: "WASM engine by:",
         configLanguage: "Language:",
         configCheats: "Cheats (F3)",
@@ -85,20 +74,11 @@ window.t = function (key) {
 
 // Function to update all translated texts on the page
 function updateAllTranslations() {
-    const keyInput = document.querySelector('.jsdos-key-input');
-    if (keyInput) keyInput.setAttribute('placeholder', t("enterJsDosKey"));
-    
     const clickToPlayButton = document.getElementById('click-to-play-button');
     if (clickToPlayButton) {
         clickToPlayButton.textContent = t('clickToPlay');
     }
 
-    const cloudSavesLink = document.getElementById('cloud-saves-link');
-    if (cloudSavesLink) cloudSavesLink.textContent = t('cloudSaves');
-
-    const cloudSavesStatus = document.getElementById('cloud-saves-status');
-    if (cloudSavesStatus) cloudSavesStatus.textContent = t('enterKey');
-    
     const disclaimerText = document.getElementById('disclaimer-text');
     if (disclaimerText) disclaimerText.textContent = t('disclaimer');
     
@@ -418,93 +398,11 @@ clickToPlay.addEventListener('click', (e) => {
     }
 });
 
-const savesMountPoint = "/vc-assets/local/userfiles";
-const savesFile = "vcsky.saves";
-wrapIDBFS(console.log).addListener({
-    onLoad: (_, mount) => {
-        if (mount.mountpoint !== savesMountPoint) {
-            return null;
-        }
-        const token = localStorage.getItem('vcsky.key');
-        if (token && token.length === 5) {
-            const promise = CloudSDK.pullFromStorage(token, savesFile);
-            promise.then((payload) => {
-                console.log('[IDBFS] onLoad', token, payload ? payload.length / 1024 : 0, 'kb');
-            });
-            return promise;
-        }
-        return null;
-    },
-    onSave: (getData, _, mount) => {
-        if (mount.mountpoint !== savesMountPoint) {
-            return;
-        }
-        const token = localStorage.getItem('vcsky.key');
-        if (token && token.length === 5) {
-            getData().then((payload) => {
-                if (payload.length > 0) {
-                    console.log('[IDBFS] onSave', token, payload.length / 1024, 'kb');
-                    return CloudSDK.pushToStorage(token, savesFile, payload);
-                }
-            });
-        }
-    },
-});
-
-
-function updateToken(token) {
-    if (!cloudSavesStatus || !keyStatus) {
-        return;
-    }
-    cloudSavesStatus.textContent = t('checking');
-    if (token.length === 5) {
-        CloudSDK.resolveToken(token).then((profile) => {
-            if (profile) {
-                console.log('[CloudSdk] resolveToken', profile);
-                localStorage.setItem('vcsky.key', profile.token);
-                if (profile.premium) {
-                    keyStatus.textContent = t('enabled');
-                    keyStatus.style.color = 'green';
-                    keyStatus.style.fontWeight = 'bold';
-                } else {
-                    keyStatus.textContent = t('disabled');
-                    keyStatus.style.color = 'red';
-                    keyStatus.style.fontWeight = 'bold';
-                }
-            } else {
-                keyStatus.textContent = t('invalidKey');
-                keyStatus.style.color = 'white';
-                keyStatus.style.fontWeight = 'normal';
-            }
-        });
-    } else {
-        cloudSavesStatus.textContent = t('enterKey');
-    }
-}
-
-const keyInput = document.querySelector('.jsdos-key-input');
-const keyStatus = document.querySelector('.jsdos-key-status');
-if (keyInput && keyStatus) {
-    keyInput.setAttribute('placeholder', t("enterJsDosKey"));
-    keyInput.addEventListener('paste', (e) => {
-        setTimeout(() => {
-            updateToken(e.target.value);
-        }, 100);
-    });
-
-    keyInput.addEventListener('keyup', (e) => {
-        updateToken(e.target.value);
-    });
-
-    if (localStorage.getItem('vcsky.key')) {
-        keyInput.value = localStorage.getItem('vcsky.key');
-        updateToken(keyInput.value);
-    } else {
-        keyStatus.textContent = t('invalidKey');
-        keyStatus.style.color = 'shite';
-        keyStatus.style.fontWeight = 'normal';
-    }
-}
+// Wires up window.syncfs, which public/modules/fs.js calls into for save-game
+// persistence to IndexedDB (see FS.syncfs -> IDBFS.syncfs -> window.syncfs).
+// No listeners are registered: local saves work through IDBFS's own sync path;
+// nothing here needs to reach outside the browser.
+wrapIDBFS(console.log);
 
 const clickToPlayButton = document.getElementById('click-to-play-button');
 clickToPlayButton.textContent = t('clickToPlay');
@@ -512,23 +410,12 @@ if (!window.__gtaGameReady) {
     clickToPlayButton.classList.add('disabled');
     clickToPlayButton.disabled = true;
 }
-const cloudSavesLink = document.getElementById('cloud-saves-link');
-if (cloudSavesLink) cloudSavesLink.textContent = t('cloudSaves');
-if (cloudSavesStatus) cloudSavesStatus.textContent = t('enterKey');
 const disclaimerText = document.getElementById('disclaimer-text');
 disclaimerText.textContent = t('disclaimer');
 const disclaimerSources = document.getElementById('disclaimer-sources');
 disclaimerSources.textContent = t('disclaimerSources');
-const developedBy = document.querySelector('.developed-by');
-const ruTranslate = t('ruTranslate');
-if (ruTranslate) developedBy.innerHTML += ruTranslate;
 const portBy = document.getElementById('port-by');
 if (portBy) portBy.textContent = t('portBy');
-
-function showWasted() {
-    const wastedContainer = document.querySelector('.wasted-container');
-    wastedContainer.hidden = false;
-}
 
 const revc_iniDefault = `
 [VideoMode]
