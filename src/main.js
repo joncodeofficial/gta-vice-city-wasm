@@ -257,7 +257,11 @@ async function initSetupFlow() {
 
   if (resetBtn) {
     resetBtn.addEventListener("click", async () => {
-      if (!confirm("This will delete all local game data (OPFS + IndexedDB). You will need to re-import game.tar.gz. Continue?")) {
+      if (
+        !confirm(
+          "This will PERMANENTLY DELETE your save game progress, along with the imported game files. This cannot be undone.\n\nYou will need to re-import game.tar.gz and start a new save. Continue?",
+        )
+      ) {
         return;
       }
       resetBtn.disabled = true;
