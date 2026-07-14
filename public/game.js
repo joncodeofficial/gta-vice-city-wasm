@@ -387,6 +387,14 @@ async function loadGame(data) {
     }]);
 }
 
+const enableCheatsCheckbox = document.getElementById('enable-cheats');
+if (enableCheatsCheckbox) {
+    enableCheatsCheckbox.checked = cheatsEnabled;
+    enableCheatsCheckbox.addEventListener('change', (e) => {
+        cheatsEnabled = e.target.checked;
+    });
+}
+
 const clickToPlay = document.querySelector('.click-to-play');
 const clickLink = clickToPlay.querySelector('button');
 clickToPlay.addEventListener('click', (e) => {
