@@ -213,7 +213,7 @@
         async function selectSaveFile(picked) {
             pendingSave = null;
             saveFileName.textContent = picked.name;
-            const saves = await expandZips([picked], /\.b$/i);
+            const saves = await expandZips([picked], /\.b$/i, SAVE_MAX_SIZE);
             if (saves.length !== 1) {
                 updateSaveSummary();
                 setStatus(`${picked.name} contains ${saves.length} saves (${saves.map((f) => f.name).join(", ")}). Extract it and import one file at a time.`, "error");

@@ -251,7 +251,7 @@
         }
 
         async function importSkinFiles(picked) {
-            const files = await expandZips(picked, /\.(bmp|png|jpe?g)$/i);
+            const files = await expandZips(picked, /\.(bmp|png|jpe?g)$/i, SKIN_MAX_FILE);
             const existing = new Set((await listSkins()).map((s) => s.name));
             const done = [];
             const failed = [];

@@ -65,12 +65,50 @@
 
     // ─── ZIP extraction ─────────────────────────────────────────────
 
+    // Limits that keep a hostile or broken archive from exhausting memory.
+    const ZIP_MAX_ENTRY = 16 * 1024 * 1024;
+    const ZIP_MAX_TOTAL = 64 * 1024 * 1024;
+    const ZIP_MAX_FILES = 64;
+
+    // Inflates a raw deflate stream, aborting as soon as the output passes
+    // `limit`. The size a ZIP declares can lie, so only the real output counts.
+    async function inflateLimited(raw, limit, label) {
+        const reader = new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw")).getReader();
+        const chunks = [];
+        let total = 0;
+        for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            total += value.length;
+            if (total > limit) {
+                await reader.cancel();
+                throw new Error(`${label} is larger than ${formatSize(limit)} once extracted.`);
+            }
+            chunks.push(value);
+        }
+        const out = new Uint8Array(total);
+        let offset = 0;
+        for (const chunk of chunks) {
+            out.set(chunk, offset);
+            offset += chunk.length;
+        }
+        return out;
+    }
+
     // Mod sites usually ship skins and saves zipped. Reads the central
     // directory and inflates entries with the browser's DecompressionStream;
-    // only stored and deflated, unencrypted entries are supported.
-    async function extractZip(file, wanted) {
+    // only stored and deflated, unencrypted, non-ZIP64 entries are supported.
+    // Each extracted file is capped at `limit` bytes.
+    async function extractZip(file, wanted, limit = ZIP_MAX_ENTRY) {
         const bytes = await readFile(file);
         const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+        const damaged = () => new Error(`${file.name} is damaged or not a valid ZIP archive.`);
+        // Every read below goes through here so a bad offset is a clear error
+        // instead of a RangeError.
+        const within = (pos, len) => {
+            if (pos < 0 || len < 0 || pos + len > bytes.length) throw damaged();
+        };
+
         let eocd = -1;
         for (let i = bytes.length - 22; i >= Math.max(0, bytes.length - 22 - 65535); i--) {
             if (view.getUint32(i, true) === 0x06054b50) {
@@ -81,17 +119,23 @@
         if (eocd < 0) throw new Error(`${file.name} is not a valid ZIP archive.`);
         const count = view.getUint16(eocd + 10, true);
         let p = view.getUint32(eocd + 16, true);
+        if (count === 0xffff || p === 0xffffffff) throw new Error(`${file.name} is a ZIP64 archive, which is not supported.`);
+
         const decoder = new TextDecoder();
         const files = [];
+        let totalSize = 0;
         for (let n = 0; n < count; n++) {
-            if (view.getUint32(p, true) !== 0x02014b50) throw new Error(`${file.name} has a damaged ZIP directory.`);
+            within(p, 46);
+            if (view.getUint32(p, true) !== 0x02014b50) throw damaged();
             const flags = view.getUint16(p + 8, true);
             const method = view.getUint16(p + 10, true);
             const compSize = view.getUint32(p + 20, true);
+            const uncompSize = view.getUint32(p + 24, true);
             const nameLen = view.getUint16(p + 28, true);
             const extraLen = view.getUint16(p + 30, true);
             const commentLen = view.getUint16(p + 32, true);
             const localOffset = view.getUint32(p + 42, true);
+            within(p + 46, nameLen);
             const path = decoder.decode(bytes.subarray(p + 46, p + 46 + nameLen));
             p += 46 + nameLen + extraLen + commentLen;
 
@@ -99,25 +143,41 @@
             if (!name || path.startsWith("__MACOSX/") || name.startsWith("._") || !wanted.test(name)) continue;
             if (flags & 1) throw new Error(`${path} in ${file.name} is encrypted.`);
             if (method !== 0 && method !== 8) throw new Error(`${path} in ${file.name} uses an unsupported compression method.`);
+            if (compSize === 0xffffffff || uncompSize === 0xffffffff || localOffset === 0xffffffff) {
+                throw new Error(`${path} in ${file.name} needs ZIP64, which is not supported.`);
+            }
+            if (files.length >= ZIP_MAX_FILES) throw new Error(`${file.name} has more than ${ZIP_MAX_FILES} matching files.`);
+            // Cheap early rejection; the streamed check below is the real one.
+            if (uncompSize > limit) throw new Error(`${path} in ${file.name} is larger than ${formatSize(limit)} once extracted.`);
 
+            within(localOffset, 30);
+            if (view.getUint32(localOffset, true) !== 0x04034b50) throw damaged();
             const dataStart = localOffset + 30 + view.getUint16(localOffset + 26, true) + view.getUint16(localOffset + 28, true);
+            within(dataStart, compSize);
             const raw = bytes.subarray(dataStart, dataStart + compSize);
-            const data = method === 0
-                ? raw
-                : new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+
+            let data;
+            if (method === 0) {
+                if (raw.length > limit) throw new Error(`${path} in ${file.name} is larger than ${formatSize(limit)}.`);
+                data = raw;
+            } else {
+                data = await inflateLimited(raw, limit, `${path} in ${file.name}`);
+            }
+            totalSize += data.length;
+            if (totalSize > ZIP_MAX_TOTAL) throw new Error(`${file.name} is larger than ${formatSize(ZIP_MAX_TOTAL)} once extracted.`);
             files.push(new File([data], name));
         }
         return files;
     }
 
-    async function expandZips(files, wanted) {
+    async function expandZips(files, wanted, limit) {
         const out = [];
         for (const file of files) {
             if (/\.(rar|7z)$/i.test(file.name)) {
                 throw new Error(`${file.name}: RAR and 7z archives cannot be opened in the browser. Extract it first (macOS: double-click it or use The Unarchiver; Windows: 7-Zip), then import the files inside.`);
             }
             if (/\.zip$/i.test(file.name)) {
-                const inner = await extractZip(file, wanted);
+                const inner = await extractZip(file, wanted, limit);
                 if (!inner.length) throw new Error(`${file.name} contains no usable files.`);
                 out.push(...inner);
             } else {
