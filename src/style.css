@@ -1138,7 +1138,7 @@ video {
   pointer-events: none;
 }
 
-/* ─── Saves & skins panel ────────────────────────────────────── */
+/* ─── Saves and Skins panels ────────────────────────────────────── */
 .userdata-panel {
   margin-top: 22px;
   padding: 20px 22px;
@@ -1152,27 +1152,15 @@ video {
   font-size: 1.15rem;
   color: var(--text-1);
 }
-.userdata-panel h3 {
-  margin: 20px 0 10px;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-2);
-}
 .userdata-panel[data-locked="1"] {
   opacity: 0.5;
   pointer-events: none;
 }
-.userdata-note,
-.userdata-summary {
+.userdata-note {
   margin: 0 0 10px;
   font-size: 0.86rem;
   line-height: 1.5;
   color: var(--text-2);
-}
-.userdata-summary:empty {
-  display: none;
 }
 .userdata-status {
   margin: 10px 0 0;
@@ -1255,17 +1243,6 @@ video {
   opacity: 0.4;
   cursor: not-allowed;
 }
-.userdata-btn-primary {
-  min-height: 40px;
-  border: none;
-  background: linear-gradient(135deg, #00d2ff, #0098d4);
-  color: #030912;
-  font-weight: 700;
-}
-.userdata-btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #00d2ff, #0098d4);
-  filter: brightness(1.08);
-}
 .userdata-btn-danger {
   border-color: rgba(255, 107, 107, 0.35);
   color: #ff6b6b;
@@ -1273,31 +1250,6 @@ video {
 .userdata-drop[data-dragging="1"] {
   border-color: rgba(0, 210, 255, 0.5);
   background: rgba(0, 210, 255, 0.06);
-}
-.userdata-import-row {
-  display: grid;
-  grid-template-columns: minmax(0, 8em) minmax(0, 1fr);
-  gap: 10px;
-  margin: 10px 0;
-}
-.userdata-label {
-  align-self: center;
-  font-size: 0.86rem;
-  color: var(--text-2);
-}
-.userdata-import-row select {
-  min-height: 40px;
-  padding: 0 10px;
-  border: 1px solid var(--border-cyan);
-  border-radius: var(--radius-btn);
-  background: var(--surface-3);
-  color: var(--text-1);
-}
-.userdata-details summary {
-  cursor: pointer;
-  font-size: 0.86rem;
-  color: var(--text-2);
-  margin-bottom: 8px;
 }
 @media (max-width: 560px) {
   .userdata-panel {

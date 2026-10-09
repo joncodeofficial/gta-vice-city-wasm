@@ -10,7 +10,6 @@
 (function () {
     const USERDATA_DB = "vc-userdata";
     const USERDATA_VERSION = 1;
-    const BACKUP_STORE = "save-backups";
     const SKIN_STORE = "skins";
 
     let launched = false;
@@ -42,12 +41,9 @@
         });
     }
 
-    // Our own database: save backups and imported skins.
+    // Our own database: imported skins.
     function openUserDataDB() {
         return openDB(USERDATA_DB, USERDATA_VERSION, (db) => {
-            if (!db.objectStoreNames.contains(BACKUP_STORE)) {
-                db.createObjectStore(BACKUP_STORE, { keyPath: "id", autoIncrement: true });
-            }
             if (!db.objectStoreNames.contains(SKIN_STORE)) {
                 db.createObjectStore(SKIN_STORE, { keyPath: "name" });
             }
@@ -203,11 +199,6 @@
         return d instanceof Date ? d.toLocaleString() : "unknown date";
     }
 
-    function stamp(d) {
-        const p = (n) => String(n).padStart(2, "0");
-        return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
-    }
-
     function download(bytes, fileName) {
         const url = URL.createObjectURL(new Blob([bytes], { type: "application/octet-stream" }));
         const a = document.createElement("a");
@@ -242,51 +233,56 @@
         }
     }
 
-    // ─── Panel: status, lock and drop zones ─────────────────────────
+    // ─── Panels: status, lock and drop zones ────────────────────────
 
-    function setStatus(message, state = "info") {
-        const status = document.getElementById("userdata-status");
-        if (!status) return;
-        status.textContent = message;
-        status.dataset.state = state;
-        status.hidden = !message;
+    // Each panel (saves, skins) has its own status line; a UI action that
+    // fails reports in the panel it belongs to.
+    function createPanel(statusId) {
+        function setStatus(message, state = "info") {
+            const status = document.getElementById(statusId);
+            if (!status) return;
+            status.textContent = message;
+            status.dataset.state = state;
+            status.hidden = !message;
+        }
+
+        // Wraps a UI action: refuses once the game is running and reports
+        // errors in the status line instead of throwing.
+        const run = (fn) => async (...args) => {
+            if (launched) {
+                setStatus("The game is already running. Reload the page to manage saves and skins.", "error");
+                return;
+            }
+            try {
+                await fn(...args);
+            } catch (err) {
+                console.error("[userdata]", err);
+                setStatus(`Error: ${err && err.message ? err.message : err}`, "error");
+            }
+        };
+
+        function bindDropZone(zone, handler) {
+            zone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                zone.dataset.dragging = "1";
+            });
+            zone.addEventListener("dragleave", () => delete zone.dataset.dragging);
+            zone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                delete zone.dataset.dragging;
+                run(handler)([...e.dataTransfer.files]);
+            });
+        }
+
+        return { setStatus, run, bindDropZone };
     }
 
-    function lockPanel() {
+    function lockPanels() {
         launched = true;
-        document.getElementById("userdata-panel")?.setAttribute("data-locked", "1");
-    }
-
-    // Wraps a UI action: refuses once the game is running and reports errors
-    // in the status line instead of throwing.
-    const run = (fn) => async (...args) => {
-        if (launched) {
-            setStatus("The game is already running. Reload the page to manage saves and skins.", "error");
-            return;
-        }
-        try {
-            await fn(...args);
-        } catch (err) {
-            console.error("[userdata]", err);
-            setStatus(`Error: ${err && err.message ? err.message : err}`, "error");
-        }
-    };
-
-    function bindDropZone(zone, handler) {
-        zone.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            zone.dataset.dragging = "1";
-        });
-        zone.addEventListener("dragleave", () => delete zone.dataset.dragging);
-        zone.addEventListener("drop", (e) => {
-            e.preventDefault();
-            delete zone.dataset.dragging;
-            run(handler)([...e.dataTransfer.files]);
-        });
+        document.querySelectorAll(".userdata-panel").forEach((panel) => panel.setAttribute("data-locked", "1"));
     }
 
     window.vcUserData = {
-        BACKUP_STORE,
         SKIN_STORE,
         reqToPromise,
         txDone,
@@ -297,14 +293,11 @@
         equalBytes,
         formatSize,
         formatDate,
-        stamp,
         download,
         readFile,
         el,
         ready,
-        setStatus,
-        lockPanel,
-        run,
-        bindDropZone,
+        createPanel,
+        lockPanels,
     };
 })();

@@ -22,13 +22,13 @@ Before pressing Start, you can add your own saved games and character skins from
 ### Saves
 
 - Add a saved game downloaded for **GTA Vice City on PC**. Files named `GTAVCsf1.b` to `GTAVCsf8.b`, or a `.zip` containing one, both work.
-- If you replace a saved game, the old one is kept as a backup you can restore.
-- You can also download your saves to keep them safe.
+- Importing into a slot that already has a save replaces it.
+- You can download your saves to keep them safe.
 
 ### Skins
 
 - Add a skin as a `.bmp`, `.png`, `.jpg` or `.zip` file. It is adjusted automatically.
-- Pick the one you want under **Skin at startup**. Once in game, open *Options → Player Skin Setup* and leave the menu to put it on.
+- Once in game, open *Options → Player Skin Setup*, pick your skin and leave the menu to put it on.
 - Skins only change Tommy's everyday outfit.
 
 If your download is a `.rar` or `.7z`, unpack it first. *Reset game data* also deletes your saves and skins.

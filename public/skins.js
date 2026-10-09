@@ -9,11 +9,11 @@
     const U = window.vcUserData;
     const {
         SKIN_STORE, reqToPromise, txDone, openUserDataDB, withDB, expandZips,
-        formatSize, download, readFile, el, ready, setStatus, lockPanel, run, bindDropZone,
+        formatSize, download, readFile, el, ready, createPanel, lockPanels,
     } = U;
+    const { setStatus, run, bindDropZone } = createPanel("skins-status");
 
     const SKIN_DIR = "/vc-assets/local/skins";
-    const STARTUP_SKIN_KEY = "vcuserdata.startupSkin";
     const SKIN_SIZE = 256;
     const SKIN_MAX_FILE = 16 * 1024 * 1024;
 
@@ -160,52 +160,16 @@
         });
     }
 
-    // This engine build reads SkinFile from revc.ini at startup but never
-    // writes it back, so a skin picked in the in-game menu is lost on reload.
-    // The startup skin chosen here is written into the ini instead. The
-    // engine pre-selects it, but only puts it on the player model when the
-    // Player Skin Setup menu is closed (verified in game).
-    // null = leave the ini alone, "" = default skin, otherwise a skin name.
-    function getStartupSkin() {
-        try {
-            return localStorage.getItem(STARTUP_SKIN_KEY);
-        } catch {
-            return null;
-        }
-    }
-
-    function setStartupSkin(name) {
-        try {
-            localStorage.setItem(STARTUP_SKIN_KEY, name);
-        } catch (err) {
-            console.warn("[userdata] could not store startup skin:", err);
-        }
-    }
-
     // ─── Launch hooks (called from game.js) ─────────────────────────
 
     async function prepareLaunch() {
-        lockPanel();
+        lockPanels();
         try {
             launchSkins = await listSkins();
         } catch (err) {
             console.error("[userdata] could not read skins:", err);
             launchSkins = [];
         }
-    }
-
-    function applyIniOverrides(ini) {
-        let skin = getStartupSkin();
-        if (skin === null) return ini;
-        if (skin && !launchSkins.some((s) => s.name === skin)) skin = "";
-        // Format confirmed in-game: the bare skin name, no quotes or extension.
-        // '$$""' is what the shipped ini uses for "no skin".
-        const line = `SkinFile=${skin || '$$""'}`;
-        // Function replacers: a string replacement would turn "$$" into "$".
-        if (/^SkinFile=/m.test(ini)) return ini.replace(/^SkinFile=[^\r\n]*/m, () => line);
-        const eol = ini.includes("\r\n") ? "\r\n" : "\n";
-        if (/^\[General\]/m.test(ini)) return ini.replace(/^\[General\][^\r\n]*/m, (m) => `${m}${eol}${line}`);
-        return `${ini}${eol}[General]${eol}${line}${eol}`;
     }
 
     function installIntoFS(FS) {
@@ -229,15 +193,9 @@
 
         const skinInput = document.getElementById("skin-file-input");
         const skinDrop = document.getElementById("skin-drop");
-        const startupSkinSelect = document.getElementById("startup-skin-select");
 
         async function refreshSkins() {
             const skins = await listSkins();
-            const current = getStartupSkin();
-            startupSkinSelect.replaceChildren(
-                el("option", { value: "" }, "Default (Tommy)"),
-                ...skins.map((s) => el("option", { value: s.name }, s.name)));
-            startupSkinSelect.value = current && skins.some((s) => s.name === current) ? current : "";
             if (!skins.length) {
                 skinList.replaceChildren(el("li", { className: "userdata-empty" }, "No custom skins imported."));
                 return;
@@ -289,8 +247,7 @@
 
         async function removeSkin(name) {
             await deleteSkin(name);
-            if (getStartupSkin() === name) setStartupSkin("");
-            setStatus(`Removed skin ${name}. If it was selected in game, the default skin is used.`, "ok");
+            setStatus(`Removed skin ${name}.`, "ok");
             await refreshSkins();
         }
 
@@ -298,12 +255,6 @@
             await importSkinFiles([...skinInput.files]);
             skinInput.value = "";
         }));
-        startupSkinSelect.addEventListener("change", () => {
-            setStartupSkin(startupSkinSelect.value);
-            setStatus(startupSkinSelect.value
-                ? `${startupSkinSelect.value} will be pre-selected. In game, open Options → Player Skin Setup and leave it to put it on.`
-                : "The default skin will be pre-selected when the game starts.", "ok");
-        });
         bindDropZone(skinDrop, (files) => importSkinFiles(files));
 
         refreshSkins().catch((err) => {
@@ -312,6 +263,6 @@
         });
     }
 
-    Object.assign(U, { prepareLaunch, installIntoFS, applyIniOverrides, validateBmp });
+    Object.assign(U, { prepareLaunch, installIntoFS, validateBmp });
     ready(initSkins);
 })();

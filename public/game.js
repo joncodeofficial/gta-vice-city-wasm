@@ -210,9 +210,8 @@ async function loadGame(data) {
     var Module = {
         mainCalled: () => {
             try {
-                const ini = window.vcUserData ? window.vcUserData.applyIniOverrides(revc_ini) : revc_ini;
                 Module.FS.unlink("/vc-assets/local/revc.ini");
-                Module.FS.createDataFile("/vc-assets/local/revc.ini", 0, ini, ini.length);
+                Module.FS.createDataFile("/vc-assets/local/revc.ini", 0, revc_ini, revc_ini.length);
             } catch (e) {
                 console.error('mainCalled error:', e);
             }
