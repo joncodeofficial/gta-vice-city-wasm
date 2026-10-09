@@ -1194,6 +1194,8 @@ video {
   border-radius: var(--radius-card);
   background: var(--surface-2);
   text-align: left;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .userdata-panel h2 {
   margin: 0 0 6px;
