@@ -802,6 +802,11 @@ select:focus {
 }
 
 @media (max-width: 640px) {
+  /* phones: cards run edge to edge, no gutter around the page */
+  .start-container {
+    padding: 0;
+  }
+
   .start-container h1 {
     font-size: 2.4rem;
   }
