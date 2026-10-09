@@ -7,7 +7,7 @@
 
 ## Features
 
-- [ ] Export/import saves — currently stored in IndexedDB and lost if the user clears browser storage
+- [x] Export/import saves — "Saves & skins" panel on the setup screen (see `docs/saves-and-skins-testing.md`)
 - [ ] Show the version of the imported game archive
 - [ ] Multi-language UI support (translation structure is already in place)
 

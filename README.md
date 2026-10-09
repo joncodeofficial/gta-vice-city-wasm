@@ -15,6 +15,16 @@ This is a different approach from the original DOS Zone port, which streams game
 
 Your imported data persists between sessions so you only need to import once unless you clear browser storage.
 
+## Saves & skins
+
+The setup screen has a **Saves & skins** panel (use it before pressing Start):
+
+- **Import saves** — pick or drop a GTA: Vice City **PC** save (`GTAVCsf1.b` … `GTAVCsf8.b`, or a `.zip` containing one). The file is checksum-validated, and any save already in the target slot is backed up first. RAR/7z archives must be extracted first.
+- **Export / restore** — download any slot or backup as a `.b` file, or restore a backup into its slot.
+- **Player skins** — import `.bmp`, `.png`, `.jpg` or `.zip` files. 256×256 uncompressed BMPs are converted losslessly to the 24-bit format the game expects; other images are scaled. Pick a **Skin at startup**, then in game open *Options → Player Skin Setup* once and leave it — the engine applies skins when that menu closes. Skins change Tommy's street outfit only.
+
+Saves live in the engine's IDBFS database (`/vc-assets/local/userfiles`); backups and skins in a separate `vc-mods` IndexedDB database. *Reset game data* deletes both. Test plan and results: [`docs/saves-and-skins-testing.md`](docs/saves-and-skins-testing.md).
+
 ## Requirements
 
 - A modern desktop browser with WebAssembly + OPFS + Service Worker support
