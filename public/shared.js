@@ -195,8 +195,16 @@
         return n >= 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB` : `${Math.round(n / 1024)} KB`;
     }
 
+    // "Oct 9, 10:35 AM", with the year only when it is not the current one.
     function formatDate(d) {
-        return d instanceof Date ? d.toLocaleString() : "unknown date";
+        if (!(d instanceof Date)) return "unknown date";
+        return d.toLocaleString(undefined, {
+            month: "short",
+            day: "numeric",
+            year: d.getFullYear() === new Date().getFullYear() ? undefined : "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+        });
     }
 
     function download(bytes, fileName) {
