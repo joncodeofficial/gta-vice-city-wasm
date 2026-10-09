@@ -491,7 +491,35 @@ async function boot() {
   }
 
   await initSetupFlow();
-  await loadLegacyScripts();
+  try {
+    await loadLegacyScripts();
+  } catch (err) {
+    showScriptLoadError(err);
+  }
+}
+
+// A script can fail to load right after a deploy, when the browser still has
+// the previous page cached but the files it asks for are gone. Say so instead
+// of leaving a Start button that does nothing.
+function showScriptLoadError(err) {
+  console.error("[boot] failed to load a game script:", err);
+  const file = String(err && err.message).split("/").pop();
+
+  const startButton = document.getElementById("click-to-play-button");
+  if (startButton) {
+    startButton.disabled = true;
+    startButton.classList.add("disabled");
+  }
+  const storageStatus = document.getElementById("storage-status");
+  if (storageStatus) {
+    storageStatus.textContent = "Could not load the game";
+    storageStatus.dataset.state = "error";
+  }
+  const errorBox = document.getElementById("setup-error");
+  if (errorBox) {
+    errorBox.style.display = "block";
+    errorBox.textContent = `A required file could not be loaded (${file}). Reload the page with Ctrl/Cmd + Shift + R. Your saves and game files are not affected.`;
+  }
 }
 
 if (document.readyState === "loading") {
