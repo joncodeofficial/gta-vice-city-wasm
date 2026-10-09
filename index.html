@@ -132,6 +132,25 @@
             ></div>
           </div>
 
+          <div class="config-option cheats-toggle">
+            <label for="enable-cheats">
+              <span>Enable cheats</span>
+              <span class="switch">
+                <input type="checkbox" id="enable-cheats" />
+                <span class="switch-track"></span>
+              </span>
+            </label>
+          </div>
+
+          <div class="click-to-play">
+            <button
+              id="click-to-play-button"
+              class="flex w-full min-h-12 items-center justify-center rounded-[14px] bg-linear-to-br from-[#82aaff] to-[#72e4c7] px-[18px] text-[1rem] font-bold text-[#07111f] transition-transform duration-200 hover:-translate-y-px"
+            >
+              Start to play
+            </button>
+          </div>
+
           <section id="userdata-panel" class="userdata-panel">
             <h2>Saves &amp; skins</h2>
             <p class="userdata-note">
@@ -246,51 +265,6 @@
               </label>
             </div>
           </div>
-
-          <div class="config-option cheats-toggle">
-            <label for="enable-cheats">
-              <span>Enable cheats</span>
-              <span class="switch">
-                <input type="checkbox" id="enable-cheats" />
-                <span class="switch-track"></span>
-              </span>
-            </label>
-          </div>
-
-          <div class="click-to-play">
-            <button
-              id="click-to-play-button"
-              class="flex w-full min-h-12 items-center justify-center rounded-[14px] bg-linear-to-br from-[#82aaff] to-[#72e4c7] px-[18px] text-[1rem] font-bold text-[#07111f] transition-transform duration-200 hover:-translate-y-px"
-            >
-              Start to play
-            </button>
-          </div>
-
-          <section class="instructions-panel">
-            <h2>How to play</h2>
-            <ol class="instructions-list">
-              <li>
-                Use `Download archive` if you want the file directly from this
-                page.
-              </li>
-              <li>
-                Or use `Choose game.tar.gz` to select a file from your computer.
-              </li>
-              <li>
-                Wait for the import to finish and confirm the local storage
-                status above.
-              </li>
-              <li>Press `Start to play` and wait for the game data to load.</li>
-              <li>
-                You can import another local file later if you want to replace
-                the current one.
-              </li>
-            </ol>
-            <p class="instructions-note">
-              Recommended: use a modern desktop browser for the smoothest setup
-              and performance.
-            </p>
-          </section>
         </div>
 
         <div
@@ -370,6 +344,32 @@
               >
             </div>
           </div>
+
+          <section class="instructions-panel">
+            <h2>How to play</h2>
+            <ol class="instructions-list">
+              <li>
+                Use `Download archive` if you want the file directly from this
+                page.
+              </li>
+              <li>
+                Or use `Choose game.tar.gz` to select a file from your computer.
+              </li>
+              <li>
+                Wait for the import to finish and confirm the local storage
+                status above.
+              </li>
+              <li>Press `Start to play` and wait for the game data to load.</li>
+              <li>
+                You can import another local file later if you want to replace
+                the current one.
+              </li>
+            </ol>
+            <p class="instructions-note">
+              Recommended: use a modern desktop browser for the smoothest setup
+              and performance.
+            </p>
+          </section>
         </div>
       </div>
     </div>
