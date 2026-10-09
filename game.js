@@ -163,6 +163,7 @@ async function startGame(e) {
     introContainer.hidden = false;
     intro.play();
 
+    await window.vcMods?.prepareLaunch();
     const dataBuffer = await loadData();
     spinnerElement.hidden = true;
     setStatus(t("clickToContinue"));
@@ -209,8 +210,9 @@ async function loadGame(data) {
     var Module = {
         mainCalled: () => {
             try {
+                const ini = window.vcMods ? window.vcMods.applyIniOverrides(revc_ini) : revc_ini;
                 Module.FS.unlink("/vc-assets/local/revc.ini");
-                Module.FS.createDataFile("/vc-assets/local/revc.ini", 0, revc_ini, revc_ini.length);
+                Module.FS.createDataFile("/vc-assets/local/revc.ini", 0, ini, ini.length);
             } catch (e) {
                 console.error('mainCalled error:', e);
             }
@@ -225,7 +227,7 @@ async function loadGame(data) {
                 console.error('syncRevcIni error:', e);
             }
         },
-        preRun: [],
+        preRun: [() => window.vcMods?.installIntoFS(Module.FS)],
         postRun: [],
         print: (...args) => console.log(args.join(' ')),
         printErr: (...args) => console.error(args.join(' ')),
