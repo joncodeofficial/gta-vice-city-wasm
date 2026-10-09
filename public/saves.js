@@ -170,6 +170,9 @@
         }
 
         async function removeSave(slot) {
+            const entry = slots.find((s) => s.slot === slot)?.entry;
+            const name = (entry && saveName(entry.contents)) || "Unnamed save";
+            if (!confirm(`Remove "${name}" from slot ${slot}? This cannot be undone.`)) return;
             await removeSlot(slot);
             setStatus(`Removed the save in slot ${slot}.`, "ok");
             await refreshSlots();

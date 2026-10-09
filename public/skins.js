@@ -246,6 +246,7 @@
         }
 
         async function removeSkin(name) {
+            if (!confirm(`Remove the skin "${name}"? This cannot be undone.`)) return;
             await deleteSkin(name);
             setStatus(`Removed skin ${name}.`, "ok");
             await refreshSkins();
