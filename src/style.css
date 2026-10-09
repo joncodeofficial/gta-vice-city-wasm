@@ -1212,9 +1212,6 @@ video {
   cursor: pointer;
   list-style: none;
 }
-.userdata-panel > summary:hover {
-  background: rgba(255, 255, 255, 0.025);
-}
 .userdata-panel > :not(summary) {
   margin-left: var(--pad-x);
   margin-right: var(--pad-x);
