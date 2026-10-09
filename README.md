@@ -1,6 +1,14 @@
 # GTA: Vice City — WASM Port
 
-**Live:** [joncodeofficial.github.io/gta-vice-city-wasm](https://joncodeofficial.github.io/gta-vice-city-wasm/)
+Play GTA: Vice City right in your browser. Nothing to install: the game runs on your own device and keeps working offline.
+
+[![Open in your browser](https://img.shields.io/badge/-open%20in%20your%20browser-0098d4?style=for-the-badge)](https://joncodeofficial.github.io/gta-vice-city-wasm/)
+
+![GTA: Vice City running in the browser, with a custom Spider-Man skin](public/demo.webp)
+
+You need the game files (`game.tar.gz`) once — see [How it works](#how-it-works).
+
+## About
 
 A **local-first** browser port of Grand Theft Auto: Vice City. Import your own `game.tar.gz` once — it gets extracted and stored directly in your browser via OPFS. From that point on, the game runs entirely from your device with no CDN, no external server, and no recurring downloads.
 
