@@ -1,5 +1,8 @@
 const OPFS_MARKER = '_game_ready';
 
+// Request types that make up the app itself; game data is served from OPFS.
+const REVALIDATED_DESTINATIONS = new Set(['document', 'script', 'style', 'worker', 'manifest']);
+
 const CONTENT_TYPES = new Map([
     ['.wasm', 'application/wasm'],
     ['.js', 'application/javascript'],
@@ -38,6 +41,20 @@ self.addEventListener('fetch', event => {
     if ((path.startsWith('/vcsky/') || path.startsWith('/vcbr/')) &&
         (event.request.method === 'GET' || event.request.method === 'HEAD')) {
         event.respondWith(serveFromOPFS(event.request, path));
+        return;
+    }
+
+    // GitHub Pages lets the browser reuse the page and its scripts for 10
+    // minutes without asking, so a deploy can be invisible for that long (or
+    // mix an old page with new files). Make the browser check with the server
+    // first: an unchanged file costs a 304, a changed one is fetched fresh.
+    if (event.request.method === 'GET' && url.origin === self.location.origin &&
+        REVALIDATED_DESTINATIONS.has(event.request.destination)) {
+        event.respondWith(
+            fetch(event.request, { cache: 'no-cache' })
+                // offline: fall back to whatever the browser still has
+                .catch(() => fetch(event.request, { cache: 'force-cache' }))
+        );
     }
 });
 
