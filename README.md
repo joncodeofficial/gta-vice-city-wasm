@@ -8,18 +8,21 @@ Play GTA: Vice City right in your browser. Nothing to install: the game runs on 
 
 You need the game files (`game.tar.gz`) once — see [How it works](#how-it-works).
 
-## About
+## What's included
 
-A **local-first** browser port of Grand Theft Auto: Vice City. Import your own `game.tar.gz` once — it gets extracted and stored directly in your browser via OPFS. From that point on, the game runs entirely from your device with no CDN, no external server, and no recurring downloads.
-
-This is a different approach from the original DOS Zone port, which streams game assets from a remote CDN. Here, a Service Worker intercepts all game file requests and serves them from local OPFS storage — meaning it works offline after the first import.
+- **Play in your browser.** Nothing to install, and your game files stay on your device.
+- **Your own saved games.** Import, export and remove PC saves.
+- **Custom skins.** Change how Tommy looks with your own images.
+- **Cheats on demand.** Off by default; switch them on from the setup screen.
+- **Touch controls.** On-screen controls for phones and tablets.
+- **Install it as an app.** Add it to your desktop or home screen from the browser.
 
 ## How it works
 
 1. Download `game.tar.gz`
 2. Open the [live page](https://joncodeofficial.github.io/gta-vice-city-wasm/) and click **Select game.tar.gz** to import the file
 3. The archive is extracted into your browser's local storage (OPFS) — this only happens once
-4. Click **Click to play** and the game loads entirely from your device
+4. Click **Start to play** and the game loads entirely from your device
 
 Your imported data persists between sessions so you only need to import once unless you clear browser storage.
 
