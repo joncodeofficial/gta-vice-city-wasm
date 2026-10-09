@@ -132,49 +132,49 @@
             ></div>
           </div>
 
-          <section id="mods-panel" class="mods-panel">
+          <section id="userdata-panel" class="userdata-panel">
             <h2>Saves &amp; skins</h2>
-            <p class="mods-note">
+            <p class="userdata-note">
               Stored in this browser. Make changes here before pressing Start;
               a running game does not see them until the page is reloaded.
             </p>
-            <div id="mods-status" class="mods-status" role="status" hidden></div>
+            <div id="userdata-status" class="userdata-status" role="status" hidden></div>
 
             <h3>Save games</h3>
-            <ul id="save-slot-list" class="mods-list"></ul>
-            <label id="save-drop" class="file-picker mods-drop" for="save-file-input">
+            <ul id="save-slot-list" class="userdata-list"></ul>
+            <label id="save-drop" class="file-picker userdata-drop" for="save-file-input">
               <span class="file-picker-label">Import a PC save (GTAVCsf*.b or .zip)</span>
               <span id="save-file-name" class="file-picker-name"
                 >Choose or drop a .b or .zip save file</span
               >
             </label>
             <input type="file" id="save-file-input" accept=".b,.zip" hidden />
-            <div class="mods-import-row">
+            <div class="userdata-import-row">
               <select id="save-slot-select" aria-label="Destination slot"></select>
-              <button id="save-import-btn" class="mods-btn mods-btn-primary" type="button" disabled>
+              <button id="save-import-btn" class="userdata-btn userdata-btn-primary" type="button" disabled>
                 Import into slot
               </button>
             </div>
-            <p id="save-import-summary" class="mods-summary"></p>
-            <details class="mods-details">
+            <p id="save-import-summary" class="userdata-summary"></p>
+            <details class="userdata-details">
               <summary>Backups (<span id="save-backup-count">0</span>)</summary>
-              <ul id="save-backup-list" class="mods-list"></ul>
+              <ul id="save-backup-list" class="userdata-list"></ul>
             </details>
 
             <h3>Player skins</h3>
-            <ul id="skin-list" class="mods-list"></ul>
-            <label id="skin-drop" class="file-picker mods-drop" for="skin-file-input">
+            <ul id="skin-list" class="userdata-list"></ul>
+            <label id="skin-drop" class="file-picker userdata-drop" for="skin-file-input">
               <span class="file-picker-label">Import skins (.bmp, .png, .jpg or .zip)</span>
               <span class="file-picker-name"
                 >24-bit 256&times;256 BMP is used as-is; other images are converted</span
               >
             </label>
             <input type="file" id="skin-file-input" accept=".bmp,.png,.jpg,.jpeg,.zip,image/bmp,image/png,image/jpeg,application/zip" multiple hidden />
-            <div class="mods-import-row">
-              <label for="startup-skin-select" class="mods-label">Skin at startup</label>
+            <div class="userdata-import-row">
+              <label for="startup-skin-select" class="userdata-label">Skin at startup</label>
               <select id="startup-skin-select"></select>
             </div>
-            <p class="mods-summary">
+            <p class="userdata-summary">
               The startup skin is pre-selected in game; Tommy puts it on once
               you open Options &rarr; Player Skin Setup and leave it (Back or
               Use Skin). Skins only change his street outfit, not cutscenes.
