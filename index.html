@@ -151,8 +151,8 @@
             </button>
           </div>
 
-          <section id="saves-panel" class="userdata-panel">
-            <h2>Saves</h2>
+          <details id="saves-panel" class="userdata-panel">
+            <summary><h2>Saves</h2></summary>
             <p class="userdata-note">
               Import a GTA Vice City PC save (.b or .zip) into a slot. Stored in
               this browser; make changes here before pressing Start.
@@ -161,10 +161,10 @@
 
             <ul id="save-slot-list" class="userdata-list"></ul>
             <input type="file" id="save-file-input" accept=".b,.zip" hidden />
-          </section>
+          </details>
 
-          <section id="skins-panel" class="userdata-panel">
-            <h2>Skins</h2>
+          <details id="skins-panel" class="userdata-panel">
+            <summary><h2>Skins</h2></summary>
             <p class="userdata-note">
               Change how Tommy looks. After starting the game, open Options
               &rarr; Player Skin Setup to pick one. Skins only change his street
@@ -180,7 +180,7 @@
               >
             </label>
             <input type="file" id="skin-file-input" accept=".bmp,.png,.jpg,.jpeg,.zip,image/bmp,image/png,image/jpeg,application/zip" multiple hidden />
-          </section>
+          </details>
 
           <div
             id="config-panel"

@@ -1147,6 +1147,42 @@ video {
   font-size: 1.15rem;
   color: var(--text-1);
 }
+.userdata-panel > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+}
+.userdata-panel > summary::-webkit-details-marker {
+  display: none;
+}
+.userdata-panel > summary::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-right: 2px solid var(--text-2);
+  border-bottom: 2px solid var(--text-2);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.userdata-panel[open] > summary::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+.userdata-panel[open] > summary {
+  margin-bottom: 10px;
+}
+.userdata-panel > summary:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.userdata-panel > summary h2 {
+  margin: 0;
+}
 .userdata-panel[data-locked="1"] {
   opacity: 0.5;
   pointer-events: none;
