@@ -644,11 +644,6 @@ a:hover {
   margin-bottom: 0.6rem;
 }
 
-.instructions-note {
-  margin: 12px 0 0;
-  font-size: 0.84rem;
-  color: var(--text-3);
-}
 
 /* ─── Disclaimer / credits ───────────────────────────────────── */
 .disclaimer,
