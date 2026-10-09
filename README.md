@@ -23,7 +23,7 @@ The setup screen has a **Saves & skins** panel (use it before pressing Start):
 - **Export / restore** — download any slot or backup as a `.b` file, or restore a backup into its slot.
 - **Player skins** — import `.bmp`, `.png`, `.jpg` or `.zip` files. 256×256 uncompressed BMPs are converted losslessly to the 24-bit format the game expects; other images are scaled. Pick a **Skin at startup**, then in game open *Options → Player Skin Setup* once and leave it — the engine applies skins when that menu closes. Skins change Tommy's street outfit only.
 
-Saves live in the engine's IDBFS database (`/vc-assets/local/userfiles`); backups and skins in a separate `vc-mods` IndexedDB database. *Reset game data* deletes both. Test plan and results: [`docs/saves-and-skins-testing.md`](docs/saves-and-skins-testing.md).
+Saves live in the engine's IDBFS database (`/vc-assets/local/userfiles`); backups and skins in a separate `vc-mods` IndexedDB database. *Reset game data* deletes both.
 
 ## Requirements
 
