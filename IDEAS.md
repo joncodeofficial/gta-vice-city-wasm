@@ -7,7 +7,6 @@
 
 ## Features
 
-- [ ] Show the version of the imported game archive
 - [ ] Multi-language UI support (translation structure is already in place)
 
 ## Dev / Infra
