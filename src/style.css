@@ -1280,6 +1280,11 @@ video {
   gap: 10px;
   margin: 10px 0;
 }
+.mods-label {
+  align-self: center;
+  font-size: 0.86rem;
+  color: var(--text-2);
+}
 .mods-import-row select {
   min-height: 40px;
   padding: 0 10px;
