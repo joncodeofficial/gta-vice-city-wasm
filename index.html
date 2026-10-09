@@ -8,6 +8,9 @@
     />
     <title>GTA: Vice City — WASM Port</title>
     <link rel="icon" type="image/webp" href="/icon.webp" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <meta name="theme-color" content="#05060a" />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
 
@@ -132,56 +135,55 @@
             ></div>
           </div>
 
-          <section id="mods-panel" class="mods-panel">
-            <h2>Saves &amp; skins</h2>
-            <p class="mods-note">
-              Stored in this browser. Make changes here before pressing Start;
-              a running game does not see them until the page is reloaded.
-            </p>
-            <div id="mods-status" class="mods-status" role="status" hidden></div>
-
-            <h3>Save games</h3>
-            <ul id="save-slot-list" class="mods-list"></ul>
-            <label id="save-drop" class="file-picker mods-drop" for="save-file-input">
-              <span class="file-picker-label">Import a PC save (GTAVCsf*.b or .zip)</span>
-              <span id="save-file-name" class="file-picker-name"
-                >Choose or drop a .b or .zip save file</span
-              >
+          <div class="config-option cheats-toggle">
+            <label for="enable-cheats">
+              <span>Enable cheats</span>
+              <span class="switch">
+                <input type="checkbox" id="enable-cheats" />
+                <span class="switch-track"></span>
+              </span>
             </label>
-            <input type="file" id="save-file-input" accept=".b,.zip" hidden />
-            <div class="mods-import-row">
-              <select id="save-slot-select" aria-label="Destination slot"></select>
-              <button id="save-import-btn" class="mods-btn mods-btn-primary" type="button" disabled>
-                Import into slot
-              </button>
-            </div>
-            <p id="save-import-summary" class="mods-summary"></p>
-            <details class="mods-details">
-              <summary>Backups (<span id="save-backup-count">0</span>)</summary>
-              <ul id="save-backup-list" class="mods-list"></ul>
-            </details>
+          </div>
 
-            <h3>Player skins</h3>
-            <ul id="skin-list" class="mods-list"></ul>
-            <label id="skin-drop" class="file-picker mods-drop" for="skin-file-input">
+          <div class="click-to-play">
+            <button
+              id="click-to-play-button"
+              class="flex w-full min-h-12 items-center justify-center rounded-[14px] bg-linear-to-br from-[#82aaff] to-[#72e4c7] px-[18px] text-[1rem] font-bold text-[#07111f] transition-transform duration-200 hover:-translate-y-px"
+            >
+              Start to play
+            </button>
+          </div>
+
+          <details id="saves-panel" class="userdata-panel">
+            <summary><h2>Saves</h2></summary>
+            <p class="userdata-note">
+              Import a GTA Vice City PC save (.b or .zip) into a slot. Stored in
+              this browser; make changes here before pressing Start.
+            </p>
+            <div id="saves-status" class="userdata-status" role="status" hidden></div>
+
+            <ul id="save-slot-list" class="userdata-list"></ul>
+            <input type="file" id="save-file-input" accept=".b,.zip" hidden />
+          </details>
+
+          <details id="skins-panel" class="userdata-panel">
+            <summary><h2>Skins</h2></summary>
+            <p class="userdata-note">
+              Change how Tommy looks. After starting the game, open Options
+              &rarr; Player Skin Setup to pick one. Skins only change his street
+              outfit, not cutscenes.
+            </p>
+            <div id="skins-status" class="userdata-status" role="status" hidden></div>
+
+            <ul id="skin-list" class="userdata-list"></ul>
+            <label id="skin-drop" class="file-picker userdata-drop" for="skin-file-input">
               <span class="file-picker-label">Import skins (.bmp, .png, .jpg or .zip)</span>
               <span class="file-picker-name"
                 >24-bit 256&times;256 BMP is used as-is; other images are converted</span
               >
             </label>
             <input type="file" id="skin-file-input" accept=".bmp,.png,.jpg,.jpeg,.zip,image/bmp,image/png,image/jpeg,application/zip" multiple hidden />
-            <div class="mods-import-row">
-              <label for="startup-skin-select" class="mods-label">Skin at startup</label>
-              <select id="startup-skin-select"></select>
-            </div>
-            <p class="mods-summary">
-              The startup skin is pre-selected in game; Tommy puts it on once
-              you open Options &rarr; Player Skin Setup and leave it (Back or
-              Use Skin). Skins only change his street outfit, not cutscenes.
-              Choices made in that menu are not remembered after a reload, so
-              set your favourite here.
-            </p>
-          </section>
+          </details>
 
           <div
             id="config-panel"
@@ -246,51 +248,6 @@
               </label>
             </div>
           </div>
-
-          <div class="config-option cheats-toggle">
-            <label for="enable-cheats">
-              <span>Enable cheats</span>
-              <span class="switch">
-                <input type="checkbox" id="enable-cheats" />
-                <span class="switch-track"></span>
-              </span>
-            </label>
-          </div>
-
-          <div class="click-to-play">
-            <button
-              id="click-to-play-button"
-              class="flex w-full min-h-12 items-center justify-center rounded-[14px] bg-linear-to-br from-[#82aaff] to-[#72e4c7] px-[18px] text-[1rem] font-bold text-[#07111f] transition-transform duration-200 hover:-translate-y-px"
-            >
-              Start to play
-            </button>
-          </div>
-
-          <section class="instructions-panel">
-            <h2>How to play</h2>
-            <ol class="instructions-list">
-              <li>
-                Use `Download archive` if you want the file directly from this
-                page.
-              </li>
-              <li>
-                Or use `Choose game.tar.gz` to select a file from your computer.
-              </li>
-              <li>
-                Wait for the import to finish and confirm the local storage
-                status above.
-              </li>
-              <li>Press `Start to play` and wait for the game data to load.</li>
-              <li>
-                You can import another local file later if you want to replace
-                the current one.
-              </li>
-            </ol>
-            <p class="instructions-note">
-              Recommended: use a modern desktop browser for the smoothest setup
-              and performance.
-            </p>
-          </section>
         </div>
 
         <div
@@ -370,6 +327,28 @@
               >
             </div>
           </div>
+
+          <section class="instructions-panel">
+            <h2>How to play</h2>
+            <ol class="instructions-list">
+              <li>
+                Use `Download archive` if you want the file directly from this
+                page.
+              </li>
+              <li>
+                Or use `Choose game.tar.gz` to select a file from your computer.
+              </li>
+              <li>
+                Wait for the import to finish and confirm the local storage
+                status above.
+              </li>
+              <li>Press `Start to play` and wait for the game data to load.</li>
+              <li>
+                You can import another local file later if you want to replace
+                the current one.
+              </li>
+            </ol>
+          </section>
         </div>
       </div>
     </div>

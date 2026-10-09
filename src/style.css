@@ -31,6 +31,26 @@ html {
   background-color: var(--bg);
 }
 
+/* thin scrollbar in the same blue as the download button */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: linear-gradient(180deg, #00d2ff, #0098d4);
+}
+/* Firefox (and browsers without the WebKit pseudo-elements) */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #00b4e6 transparent;
+  }
+}
+
 body.gameIsStarted {
   background-color: #000 !important;
   background-image: none !important;
@@ -77,6 +97,36 @@ body::before {
     rgba(0, 0, 0, 0.06) 2px,
     rgba(0, 0, 0, 0.06) 4px
   );
+}
+
+/* dark grid drifting diagonally behind the page */
+body::after {
+  content: "";
+  position: fixed;
+  /* one extra tile on every side so the loop never shows an edge */
+  inset: -48px;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(120, 150, 210, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 150, 210, 0.12) 1px, transparent 1px);
+  background-size: 48px 48px;
+  /* only transform is animated, so it runs on the GPU without repainting */
+  will-change: transform;
+  animation: grid-drift 14s linear infinite;
+}
+@keyframes grid-drift {
+  to {
+    transform: translate3d(48px, 48px, 0);
+  }
+}
+body.gameIsStarted::after {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
+  }
 }
 
 a {
@@ -644,11 +694,6 @@ a:hover {
   margin-bottom: 0.6rem;
 }
 
-.instructions-note {
-  margin: 12px 0 0;
-  font-size: 0.84rem;
-  color: var(--text-3);
-}
 
 /* ─── Disclaimer / credits ───────────────────────────────────── */
 .disclaimer,
@@ -1138,43 +1183,80 @@ video {
   pointer-events: none;
 }
 
-/* ─── Saves & skins panel ────────────────────────────────────── */
-.mods-panel {
+/* ─── Saves and Skins panels ────────────────────────────────────── */
+.userdata-panel {
+  /* the padding lives on the summary so the whole closed card is clickable */
+  --pad-y: 20px;
+  --pad-x: 22px;
   margin-top: 22px;
-  padding: 20px 22px;
+  padding: 0;
   border: 1px solid var(--border-cyan);
   border-radius: var(--radius-card);
   background: var(--surface-2);
   text-align: left;
+  -webkit-user-select: none;
+  user-select: none;
 }
-.mods-panel h2 {
+.userdata-panel h2 {
   margin: 0 0 6px;
   font-size: 1.15rem;
   color: var(--text-1);
 }
-.mods-panel h3 {
-  margin: 20px 0 10px;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-2);
+.userdata-panel > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: var(--pad-y) var(--pad-x);
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  list-style: none;
 }
-.mods-panel[data-locked="1"] {
+.userdata-panel > :not(summary) {
+  margin-left: var(--pad-x);
+  margin-right: var(--pad-x);
+}
+.userdata-panel[open] {
+  padding-bottom: var(--pad-y);
+}
+.userdata-panel > summary::-webkit-details-marker {
+  display: none;
+}
+.userdata-panel > summary::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-right: 2px solid var(--text-2);
+  border-bottom: 2px solid var(--text-2);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.userdata-panel[open] > summary::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+.userdata-panel[open] > summary {
+  padding-bottom: 10px;
+}
+.userdata-panel > summary:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: -2px;
+}
+.userdata-panel > summary h2 {
+  margin: 0;
+}
+.userdata-panel[data-locked="1"] {
   opacity: 0.5;
   pointer-events: none;
 }
-.mods-note,
-.mods-summary {
+.userdata-note {
   margin: 0 0 10px;
   font-size: 0.86rem;
   line-height: 1.5;
   color: var(--text-2);
 }
-.mods-summary:empty {
-  display: none;
-}
-.mods-status {
+.userdata-status {
   margin: 10px 0 0;
   padding: 10px 14px;
   border-radius: var(--radius-inner);
@@ -1184,59 +1266,59 @@ video {
   color: var(--text-1);
   word-break: break-word;
 }
-.mods-status[data-state="ok"] {
+.userdata-status[data-state="ok"] {
   border-color: rgba(0, 229, 160, 0.3);
   background: rgba(0, 229, 160, 0.07);
   color: #8fffd8;
 }
-.mods-status[data-state="error"] {
+.userdata-status[data-state="error"] {
   border-color: rgba(255, 80, 80, 0.3);
   background: rgba(255, 80, 80, 0.06);
   color: #ff7b7b;
 }
-.mods-list {
+.userdata-list {
   margin: 0 0 12px;
   padding: 0;
   list-style: none;
   display: grid;
   gap: 4px;
 }
-.mods-row {
+.userdata-row {
   display: grid;
-  grid-template-columns: 5.5em minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 6px 10px;
   border-radius: var(--radius-inner);
   background: var(--surface-3);
   font-size: 0.86rem;
 }
-#skin-list .mods-row {
+#skin-list .userdata-row {
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
 }
-.mods-row-title {
+.userdata-row-title {
   font-weight: 700;
   color: var(--text-1);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.mods-row-info {
+.userdata-row-info {
   color: var(--text-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.mods-row-actions {
+.userdata-row-actions {
   display: flex;
   gap: 6px;
 }
-.mods-empty {
+.userdata-empty {
   padding: 6px 0;
   font-size: 0.86rem;
   color: var(--text-2);
 }
-.mods-btn {
+.userdata-btn {
   min-height: 30px;
   padding: 0 12px;
   border: 1px solid var(--border-cyan);
@@ -1247,67 +1329,32 @@ video {
   font-weight: 600;
   cursor: pointer;
 }
-.mods-btn:hover:not(:disabled) {
+.userdata-btn:hover:not(:disabled) {
   border-color: rgba(0, 210, 255, 0.4);
   background: rgba(0, 210, 255, 0.06);
 }
-.mods-btn:disabled {
+.userdata-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
-.mods-btn-primary {
-  min-height: 40px;
-  border: none;
-  background: linear-gradient(135deg, #00d2ff, #0098d4);
-  color: #030912;
-  font-weight: 700;
-}
-.mods-btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #00d2ff, #0098d4);
-  filter: brightness(1.08);
-}
-.mods-btn-danger {
+.userdata-btn-danger {
   border-color: rgba(255, 107, 107, 0.35);
   color: #ff6b6b;
 }
-.mods-drop[data-dragging="1"] {
+.userdata-drop[data-dragging="1"] {
   border-color: rgba(0, 210, 255, 0.5);
   background: rgba(0, 210, 255, 0.06);
 }
-.mods-import-row {
-  display: grid;
-  grid-template-columns: minmax(0, 8em) minmax(0, 1fr);
-  gap: 10px;
-  margin: 10px 0;
-}
-.mods-label {
-  align-self: center;
-  font-size: 0.86rem;
-  color: var(--text-2);
-}
-.mods-import-row select {
-  min-height: 40px;
-  padding: 0 10px;
-  border: 1px solid var(--border-cyan);
-  border-radius: var(--radius-btn);
-  background: var(--surface-3);
-  color: var(--text-1);
-}
-.mods-details summary {
-  cursor: pointer;
-  font-size: 0.86rem;
-  color: var(--text-2);
-  margin-bottom: 8px;
-}
 @media (max-width: 560px) {
-  .mods-panel {
-    padding: 16px;
+  .userdata-panel {
+    --pad-y: 16px;
+    --pad-x: 16px;
   }
-  .mods-row,
-  #skin-list .mods-row {
+  .userdata-row,
+  #skin-list .userdata-row {
     grid-template-columns: minmax(0, 1fr) auto;
   }
-  .mods-row-info {
+  .userdata-row-info {
     grid-column: 1 / -1;
     grid-row: 2;
   }

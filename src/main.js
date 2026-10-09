@@ -5,7 +5,9 @@ const BASE = import.meta.env.BASE_URL;
 const LEGACY_SCRIPT_SOURCES = [
   `${BASE}GamepadEmulator.js`,
   `${BASE}idbfs.js`,
-  `${BASE}mods.js`,
+  `${BASE}shared.js`,
+  `${BASE}saves.js`,
+  `${BASE}skins.js`,
   `${BASE}game.js`,
 ];
 

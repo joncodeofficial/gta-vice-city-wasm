@@ -17,13 +17,21 @@ Your imported data persists between sessions so you only need to import once unl
 
 ## Saves & skins
 
-The setup screen has a **Saves & skins** panel (use it before pressing Start):
+Before pressing Start, you can add your own saved games and character skins from the **Saves & skins** section.
 
-- **Import saves** — pick or drop a GTA: Vice City **PC** save (`GTAVCsf1.b` … `GTAVCsf8.b`, or a `.zip` containing one). The file is checksum-validated, and any save already in the target slot is backed up first. RAR/7z archives must be extracted first.
-- **Export / restore** — download any slot or backup as a `.b` file, or restore a backup into its slot.
-- **Player skins** — import `.bmp`, `.png`, `.jpg` or `.zip` files. 256×256 uncompressed BMPs are converted losslessly to the 24-bit format the game expects; other images are scaled. Pick a **Skin at startup**, then in game open *Options → Player Skin Setup* once and leave it — the engine applies skins when that menu closes. Skins change Tommy's street outfit only.
+### Saves
 
-Saves live in the engine's IDBFS database (`/vc-assets/local/userfiles`); backups and skins in a separate `vc-mods` IndexedDB database. *Reset game data* deletes both. Test plan and results: [`docs/saves-and-skins-testing.md`](docs/saves-and-skins-testing.md).
+- Add a saved game downloaded for **GTA Vice City on PC**. Files named `GTAVCsf1.b` to `GTAVCsf8.b`, or a `.zip` containing one, both work.
+- Importing into a slot that already has a save replaces it.
+- You can download your saves to keep them safe.
+
+### Skins
+
+- Add a skin as a `.bmp`, `.png`, `.jpg` or `.zip` file. It is adjusted automatically.
+- Once in game, open *Options → Player Skin Setup*, pick your skin and leave the menu to put it on.
+- Skins only change Tommy's everyday outfit.
+
+If your download is a `.rar` or `.7z`, unpack it first. *Reset game data* also deletes your saves and skins.
 
 ## Requirements
 
