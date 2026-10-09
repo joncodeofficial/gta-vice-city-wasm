@@ -237,7 +237,12 @@ async function initSetupFlow() {
     return;
   }
 
-  downloadLink.href = ASSET_RELEASE_URL;
+  if (ASSET_RELEASE_URL) {
+    downloadLink.href = ASSET_RELEASE_URL;
+  } else {
+    // No archive URL configured for this build (VITE_ASSET_URL unset).
+    downloadLink.style.display = "none";
+  }
 
   const showError = (message) => {
     errorBox.style.display = "block";
