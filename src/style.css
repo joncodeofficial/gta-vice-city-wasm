@@ -79,6 +79,36 @@ body::before {
   );
 }
 
+/* dark grid drifting diagonally behind the page */
+body::after {
+  content: "";
+  position: fixed;
+  /* one extra tile on every side so the loop never shows an edge */
+  inset: -48px;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(120, 150, 210, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 150, 210, 0.12) 1px, transparent 1px);
+  background-size: 48px 48px;
+  /* only transform is animated, so it runs on the GPU without repainting */
+  will-change: transform;
+  animation: grid-drift 14s linear infinite;
+}
+@keyframes grid-drift {
+  to {
+    transform: translate3d(48px, 48px, 0);
+  }
+}
+body.gameIsStarted::after {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
+  }
+}
+
 a {
   color: var(--accent-2);
   text-decoration: none;
