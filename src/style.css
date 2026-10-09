@@ -33,14 +33,14 @@ html {
 
 /* thin scrollbar in the same blue as the download button */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  border-radius: 4px;
+  border-radius: 3px;
   background: linear-gradient(180deg, #00d2ff, #0098d4);
 }
 /* Firefox (and browsers without the WebKit pseudo-elements) */
@@ -802,6 +802,11 @@ select:focus {
 }
 
 @media (max-width: 640px) {
+  /* phones: cards run edge to edge, no gutter around the page */
+  .start-container {
+    padding: 0;
+  }
+
   .start-container h1 {
     font-size: 2.4rem;
   }
