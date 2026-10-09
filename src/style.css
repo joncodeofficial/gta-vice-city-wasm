@@ -366,7 +366,7 @@ a:hover {
   gap: 5px;
   padding: 13px 16px;
   box-sizing: border-box;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0, 210, 255, 0.25);
   border-radius: var(--radius-btn);
   cursor: pointer;
   background: var(--surface-3);
@@ -379,9 +379,11 @@ a:hover {
 
 .file-picker:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 210, 255, 0.3);
-  background: rgba(0, 210, 255, 0.04);
-  box-shadow: var(--glow-cyan);
+  border-color: var(--accent-2);
+  background: rgba(0, 210, 255, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(0, 210, 255, 0.35),
+    0 0 26px rgba(0, 210, 255, 0.28);
 }
 
 .file-picker-label {
@@ -389,7 +391,7 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-2);
 }
 
 .file-picker-name {
