@@ -1185,8 +1185,11 @@ video {
 
 /* ─── Saves and Skins panels ────────────────────────────────────── */
 .userdata-panel {
+  /* the padding lives on the summary so the whole closed card is clickable */
+  --pad-y: 20px;
+  --pad-x: 22px;
   margin-top: 22px;
-  padding: 20px 22px;
+  padding: 0;
   border: 1px solid var(--border-cyan);
   border-radius: var(--radius-card);
   background: var(--surface-2);
@@ -1202,8 +1205,20 @@ video {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: var(--pad-y) var(--pad-x);
+  border-radius: var(--radius-card);
   cursor: pointer;
   list-style: none;
+}
+.userdata-panel > summary:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+.userdata-panel > :not(summary) {
+  margin-left: var(--pad-x);
+  margin-right: var(--pad-x);
+}
+.userdata-panel[open] {
+  padding-bottom: var(--pad-y);
 }
 .userdata-panel > summary::-webkit-details-marker {
   display: none;
@@ -1223,12 +1238,11 @@ video {
   transform: translateY(2px) rotate(-135deg);
 }
 .userdata-panel[open] > summary {
-  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 .userdata-panel > summary:focus-visible {
   outline: 2px solid var(--accent-2);
-  outline-offset: 4px;
-  border-radius: 4px;
+  outline-offset: -2px;
 }
 .userdata-panel > summary h2 {
   margin: 0;
@@ -1334,7 +1348,8 @@ video {
 }
 @media (max-width: 560px) {
   .userdata-panel {
-    padding: 16px;
+    --pad-y: 16px;
+    --pad-x: 16px;
   }
   .userdata-row,
   #skin-list .userdata-row {
