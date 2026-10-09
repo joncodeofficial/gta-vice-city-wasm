@@ -31,6 +31,26 @@ html {
   background-color: var(--bg);
 }
 
+/* thin scrollbar in the same blue as the download button */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: linear-gradient(180deg, #00d2ff, #0098d4);
+}
+/* Firefox (and browsers without the WebKit pseudo-elements) */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #00b4e6 transparent;
+  }
+}
+
 body.gameIsStarted {
   background-color: #000 !important;
   background-image: none !important;
