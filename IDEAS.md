@@ -11,5 +11,4 @@
 
 ## Dev / Infra
 
-- [ ] Basic Playwright tests — verify SW registration, OPFS writes, and game startup
 - [x] PWA manifest — allow installing the game as an app from the browser
