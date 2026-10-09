@@ -163,6 +163,7 @@ async function startGame(e) {
     introContainer.hidden = false;
     intro.play();
 
+    await window.vcMods?.prepareLaunch();
     const dataBuffer = await loadData();
     spinnerElement.hidden = true;
     setStatus(t("clickToContinue"));
@@ -225,7 +226,7 @@ async function loadGame(data) {
                 console.error('syncRevcIni error:', e);
             }
         },
-        preRun: [],
+        preRun: [() => window.vcMods?.installIntoFS(Module.FS)],
         postRun: [],
         print: (...args) => console.log(args.join(' ')),
         printErr: (...args) => console.error(args.join(' ')),
