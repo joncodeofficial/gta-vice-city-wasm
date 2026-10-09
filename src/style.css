@@ -366,7 +366,7 @@ a:hover {
   gap: 5px;
   padding: 13px 16px;
   box-sizing: border-box;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0, 210, 255, 0.25);
   border-radius: var(--radius-btn);
   cursor: pointer;
   background: var(--surface-3);
@@ -379,9 +379,11 @@ a:hover {
 
 .file-picker:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 210, 255, 0.3);
-  background: rgba(0, 210, 255, 0.04);
-  box-shadow: var(--glow-cyan);
+  border-color: var(--accent-2);
+  background: rgba(0, 210, 255, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(0, 210, 255, 0.35),
+    0 0 26px rgba(0, 210, 255, 0.28);
 }
 
 .file-picker-label {
@@ -389,7 +391,7 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-2);
 }
 
 .file-picker-name {
@@ -397,6 +399,41 @@ a:hover {
   font-size: 0.94rem;
   line-height: 1.5;
   word-break: break-word;
+}
+
+/* numbered setup flow: 1 download, 2 select (a hidden step is skipped) */
+.start-container {
+  counter-reset: play-step;
+}
+.setup-actions-panel .dl-btn,
+.setup-actions-panel .file-picker {
+  position: relative;
+}
+.setup-actions-panel .dl-btn::before,
+.setup-actions-panel .file-picker::before {
+  counter-increment: play-step;
+  content: counter(play-step);
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 23px;
+  padding-top: 1px; /* digits sit slightly high in their line box */
+  transform: translateY(-50%);
+  border: 1px solid rgba(0, 210, 255, 0.55);
+  border-radius: 50%;
+  background: #030912;
+  color: var(--accent-2);
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums; /* every digit gets the same width, so "1" centres */
+  letter-spacing: 0;
+  line-height: 1;
+}
+.setup-actions-panel .file-picker {
+  padding-left: 52px;
 }
 
 #game-file-input {
