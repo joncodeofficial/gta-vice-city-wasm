@@ -5,6 +5,7 @@ const BASE = import.meta.env.BASE_URL;
 const LEGACY_SCRIPT_SOURCES = [
   `${BASE}GamepadEmulator.js`,
   `${BASE}idbfs.js`,
+  `${BASE}mods.js`,
   `${BASE}game.js`,
 ];
 
@@ -236,7 +237,12 @@ async function initSetupFlow() {
     return;
   }
 
-  downloadLink.href = ASSET_RELEASE_URL;
+  if (ASSET_RELEASE_URL) {
+    downloadLink.href = ASSET_RELEASE_URL;
+  } else {
+    // No archive URL configured for this build (VITE_ASSET_URL unset).
+    downloadLink.style.display = "none";
+  }
 
   const showError = (message) => {
     errorBox.style.display = "block";
