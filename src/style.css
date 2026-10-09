@@ -1191,9 +1191,9 @@ video {
 }
 .userdata-row {
   display: grid;
-  grid-template-columns: 5.5em minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 6px 10px;
   border-radius: var(--radius-inner);
   background: var(--surface-3);
