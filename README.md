@@ -87,8 +87,8 @@ This repository's source code is licensed under the [MIT License](LICENSE).
 
 ## Disclaimer
 
-This is not a commercial release and is not affiliated with Rockstar Games or Take-Two Interactive. It is built entirely on an open-source reimplementation of the game engine and does not include, distribute, or host any original game assets. You must own a legitimate copy of GTA: Vice City to use this software. All trademarks and copyrights belong to their respective owners.
+This is an unofficial, non-commercial fan project. It is not affiliated with, endorsed by, or sponsored by Rockstar Games or Take-Two Interactive. "Grand Theft Auto" and "Vice City" are trademarks of their respective owners and are used here only to describe which game this software is compatible with.
 
-Any URL, script, or method referenced in this repository for obtaining game assets is provided solely for the maintainer's own development and testing purposes. Its availability is not guaranteed, and no permission is granted to third parties to rehost, hotlink, mirror, or redistribute those assets. The maintainer is not responsible for how third parties use, host, or redistribute game assets referenced or linked from this repository, nor for any consequences arising from unauthorized use of this project or its assets.
+The source code in this repository does not include the game's data files (models, textures, audio, maps). It is built on an open-source reimplementation of the game engine, and you need your own legitimate copy of GTA: Vice City to use it. The maintainer does not authorize anyone to redistribute the game's files and is not responsible for how third parties obtain, host, or share them, nor for any consequences of unauthorized use of this project.
 
 This software is provided "as is", without warranty of any kind. See the [LICENSE](LICENSE) file for the full liability disclaimer.
