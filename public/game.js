@@ -55,7 +55,7 @@ const translations = {
     en: {
         clickToPlay: "Start to play",
         disclaimer: "DISCLAIMER:",
-        disclaimerSources: "This game is based on an open source version of GTA: Vice City. It is not a commercial release and is not affiliated with Rockstar Games.",
+        disclaimerSources: "Unofficial fan project, not affiliated with, endorsed by or sponsored by Rockstar Games or Take-Two Interactive. It does not include the game's data files, and you need your own legitimate copy of Grand Theft Auto: Vice City to play. All trademarks and copyrights belong to their respective owners.",
         downloading: "Downloading",
         clickToContinue: "Click to continue...",
         portBy: "WASM engine by:",
