@@ -961,19 +961,6 @@ select:focus {
   }
 }
 
-.wasted-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  background-image: url(https://cdn.dos.zone/vcsky/wasted.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .touch-controls-wrapper {
   position: fixed;
   top: 0;
