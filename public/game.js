@@ -7,7 +7,8 @@ var wasm_content;
 const params = new URLSearchParams(window.location.search);
 
 // Base URLs
-const replaceFetch = (str) => str.replace("https://cdn.dos.zone/vcsky/", "/vcsky/")
+// The engine binary requests /vcsky/ files by absolute URL; keep them same-origin.
+const replaceFetch = (str) => str.replace(/^https?:\/\/[^/]+\/vcsky\//, "/vcsky/")
 const replaceBR = "/vcbr/"
 
 // Configurable mode - show settings UI before play

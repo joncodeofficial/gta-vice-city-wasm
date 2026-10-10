@@ -447,19 +447,6 @@ function checkBrowserCompatibility() {
   return missing;
 }
 
-function initHostRedirectGuard() {
-  try {
-    // const host = window.parent.location.host;
-    // console.log("The host:", host);
-    // if ((!host.endsWith("dos.zone") || host.endsWith("cdn.dos.zone")) && !host.startsWith("localhost") &&
-    //     !host.startsWith("192.168.0.") && !host.startsWith("test.js-dos.com")) {
-    //     location.href = "https://dos.zone/grand-theft-auto-vice-city/";
-    // }
-  } catch {
-    // ignore
-  }
-}
-
 function initOrientationLock() {
   const observer = new MutationObserver(() => {
     if (document.body.classList.contains("gameIsStarted")) {
@@ -472,7 +459,6 @@ function initOrientationLock() {
 
 async function boot() {
   initCanvasBindings();
-  initHostRedirectGuard();
   initOrientationLock();
 
   const missing = checkBrowserCompatibility();
