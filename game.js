@@ -16,7 +16,11 @@ const configurableMode = params.get('configurable') === "1";
 
 // Settings that can be configured via URL or UI
 let autoFullScreen = params.get('fullscreen') !== "0";
-let cheatsEnabled = params.get('cheats') === "1" || configurableMode;
+// The setup switch is remembered; ?cheats=1 still turns cheats on regardless.
+const CHEATS_KEY = 'vcsky.cheats';
+let cheatsEnabled = params.get('cheats') === "1" || configurableMode || (() => {
+    try { return localStorage.getItem(CHEATS_KEY) === '1'; } catch { return false; }
+})();
 let maxFPS = parseInt(params.get('max_fps')) || 0;
 
 const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -358,6 +362,7 @@ if (enableCheatsCheckbox) {
     enableCheatsCheckbox.checked = cheatsEnabled;
     enableCheatsCheckbox.addEventListener('change', (e) => {
         cheatsEnabled = e.target.checked;
+        try { localStorage.setItem(CHEATS_KEY, cheatsEnabled ? '1' : '0'); } catch {}
     });
 }
 
