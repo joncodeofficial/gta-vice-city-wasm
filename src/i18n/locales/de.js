@@ -49,6 +49,17 @@ export default {
     scriptLoad:
       "Eine benötigte Datei konnte nicht geladen werden ({{file}}). Lade die Seite mit Strg/Cmd + Umschalt + R neu. Deine Spielstände und Spieldateien sind davon nicht betroffen.",
   },
+  controller: {
+    title: "Controller",
+    connect: "Controller verbinden",
+    idle: "Kopple deinen Controller und drücke eine beliebige Taste oder klicke auf Controller verbinden.",
+    nativeOnly: "Kopple deinen Controller, klicke auf die Seite und drücke eine Taste am Controller.",
+    connecting: "Wähle deinen Controller in der Geräteauswahl des Browsers aus…",
+    connected: "Verbunden: {{name}}",
+    unsupported: "Dieser Controller kann nicht direkt verbunden werden. Versuche, ihn mit deinem Gerät zu koppeln.",
+    permissionDenied: "Der Zugriff auf den Controller wurde verweigert. Erlaube den Zugriff im Browser und versuche es erneut.",
+    failed: "Verbindung fehlgeschlagen. Versuche es erneut oder verwende Tastatur und Maus.",
+  },
   cheats: {
     enable: "Cheats aktivieren",
   },

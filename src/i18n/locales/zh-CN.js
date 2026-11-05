@@ -47,6 +47,17 @@ export default {
     wrongFile: "请选择 game.tar.gz 文件。",
     scriptLoad: "无法加载必需的文件（{{file}}）。请按 Ctrl/Cmd + Shift + R 重新加载页面。你的存档和游戏文件不受影响。",
   },
+  controller: {
+    title: "手柄",
+    connect: "连接手柄",
+    idle: "配对手柄并按任意按钮，或点击“连接手柄”。",
+    nativeOnly: "配对手柄，点击页面，然后按下手柄上的按钮。",
+    connecting: "请在浏览器的设备选择窗口中选择手柄…",
+    connected: "已连接：{{name}}",
+    unsupported: "此手柄无法直接连接。请尝试将其与设备配对。",
+    permissionDenied: "手柄访问权限被拒绝。请在浏览器中允许访问，然后重试。",
+    failed: "连接失败。请重试，或使用键盘和鼠标。",
+  },
   cheats: {
     enable: "启用作弊",
   },
