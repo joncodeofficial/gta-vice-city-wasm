@@ -2,6 +2,8 @@
     const nativeGamepads = navigator.getGamepads?.bind(navigator);
     const button = document.getElementById('connect-controller');
     const status = document.getElementById('controller-status');
+    const note = document.getElementById('controller-note');
+    const badge = document.getElementById('controller-badge');
     let device, driver, emulator, virtualPad, lastReport;
     let connected = false;
 
@@ -66,8 +68,11 @@
         try { return Array.from(nativeGamepads?.() || []).find(pad => pad?.connected); }
         catch { return null; }
     }
+    // The status box only appears for news (connecting, connected, an error); null hides it.
     function show(key, options) {
         if (!status) return;
+        status.hidden = !key;
+        if (!key) return;
         status.dataset.state = key === 'controller.connected' ? 'ok' : ['controller.failed', 'controller.permissionDenied', 'controller.unsupported'].includes(key) ? 'error' : '';
         window.vcI18n.setText(status, key, options);
     }
@@ -79,8 +84,10 @@
     }
     function updateStatus() {
         const name = connected ? device.productName : nativePad()?.id;
-        if (button) button.disabled = !!name;
-        show(name ? 'controller.connected' : navigator.hid ? 'controller.idle' : 'controller.nativeOnly', { name });
+        if (button) button.hidden = !navigator.hid || !!name;
+        if (badge) badge.hidden = !name;
+        if (note) window.vcI18n.setText(note, navigator.hid ? 'controller.noteHid' : 'controller.note');
+        show(name ? 'controller.connected' : null, { name });
     }
     function release() {
         if (!virtualPad) return;
@@ -146,12 +153,11 @@
     window.addEventListener('focus', apply);
     document.addEventListener('visibilitychange', () => document.hidden ? release() : apply());
     if (button) {
-        button.hidden = !navigator.hid;
         button.addEventListener('click', async () => {
             button.disabled = true;
             show('controller.connecting');
             try { await window.vcController.connect(true); }
-            finally { button.disabled = connected || !!nativePad(); }
+            finally { button.disabled = false; }
         });
     }
     updateStatus();

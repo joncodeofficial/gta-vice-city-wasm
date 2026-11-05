@@ -54,9 +54,10 @@ export default {
   },
   controller: {
     title: "Controller",
-    connect: "Connect controller",
-    idle: "Pair your controller and press any button, or click Connect controller.",
-    nativeOnly: "Pair your controller, click the page and press a controller button.",
+    connect: "Connect",
+    note: "Pair your controller and press any button.",
+    noteHid: "Pair your controller and press any button. If the game doesn't detect it, connect it here.",
+    badge: "Connected",
     connecting: "Choose your controller in the browser’s device picker…",
     connected: "Connected: {{name}}",
     unsupported: "This controller cannot connect directly. Try pairing it with your device.",

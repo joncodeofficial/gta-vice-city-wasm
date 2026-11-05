@@ -51,9 +51,10 @@ export default {
   },
   controller: {
     title: "Manette",
-    connect: "Connecter une manette",
-    idle: "Associez votre manette et appuyez sur un bouton, ou cliquez sur Connecter une manette.",
-    nativeOnly: "Associez votre manette, cliquez sur la page et appuyez sur un bouton de la manette.",
+    connect: "Connecter",
+    note: "Associez votre manette et appuyez sur un bouton.",
+    noteHid: "Associez votre manette et appuyez sur un bouton. Si le jeu ne la détecte pas, connectez-la ici.",
+    badge: "Connectée",
     connecting: "Choisissez votre manette dans le sélecteur de périphériques du navigateur…",
     connected: "Connectée : {{name}}",
     unsupported: "Cette manette ne peut pas se connecter directement. Essayez de l’associer à votre appareil.",

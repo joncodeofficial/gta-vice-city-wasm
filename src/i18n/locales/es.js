@@ -51,9 +51,10 @@ export default {
   },
   controller: {
     title: "Mando",
-    connect: "Conectar mando",
-    idle: "Empareja tu mando y pulsa cualquier botón, o haz clic en Conectar mando.",
-    nativeOnly: "Empareja tu mando, haz clic en la página y pulsa un botón del mando.",
+    connect: "Conectar",
+    note: "Empareja tu mando y pulsa cualquier botón.",
+    noteHid: "Empareja tu mando y pulsa cualquier botón. Si el juego no lo detecta, conéctalo aquí.",
+    badge: "Conectado",
     connecting: "Elige tu mando en el selector de dispositivos del navegador…",
     connected: "Conectado: {{name}}",
     unsupported: "Este mando no se puede conectar directamente. Prueba a emparejarlo con tu dispositivo.",

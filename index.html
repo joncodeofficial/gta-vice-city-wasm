@@ -225,9 +225,13 @@
           </details>
 
           <details id="controller-panel" class="userdata-panel controller-option">
-            <summary><h2 data-i18n="controller.title">Controller</h2></summary>
-            <p id="controller-status" class="userdata-status" role="status" aria-live="polite" data-i18n="controller.idle">Pair your controller and press any button, or click Connect controller.</p>
-            <button id="connect-controller" class="userdata-btn" type="button" data-i18n="controller.connect">Connect controller</button>
+            <summary>
+              <h2 data-i18n="controller.title">Controller</h2>
+              <span id="controller-badge" class="controller-badge" data-i18n="controller.badge" hidden>Connected</span>
+            </summary>
+            <p id="controller-note" class="userdata-note" data-i18n="controller.note">Pair your controller and press any button.</p>
+            <button id="connect-controller" class="userdata-btn" type="button" data-i18n="controller.connect" hidden>Connect</button>
+            <div id="controller-status" class="userdata-status" role="status" aria-live="polite" hidden></div>
           </details>
 
           <div

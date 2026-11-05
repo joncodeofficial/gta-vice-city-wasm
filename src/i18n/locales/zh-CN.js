@@ -49,9 +49,10 @@ export default {
   },
   controller: {
     title: "手柄",
-    connect: "连接手柄",
-    idle: "配对手柄并按任意按钮，或点击“连接手柄”。",
-    nativeOnly: "配对手柄，点击页面，然后按下手柄上的按钮。",
+    connect: "连接",
+    note: "配对手柄并按任意按钮。",
+    noteHid: "配对手柄并按任意按钮。如果游戏未检测到，请在此连接。",
+    badge: "已连接",
     connecting: "请在浏览器的设备选择窗口中选择手柄…",
     connected: "已连接：{{name}}",
     unsupported: "此手柄无法直接连接。请尝试将其与设备配对。",

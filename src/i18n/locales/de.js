@@ -51,9 +51,10 @@ export default {
   },
   controller: {
     title: "Controller",
-    connect: "Controller verbinden",
-    idle: "Kopple deinen Controller und drücke eine beliebige Taste oder klicke auf Controller verbinden.",
-    nativeOnly: "Kopple deinen Controller, klicke auf die Seite und drücke eine Taste am Controller.",
+    connect: "Verbinden",
+    note: "Kopple deinen Controller und drücke eine beliebige Taste.",
+    noteHid: "Kopple deinen Controller und drücke eine beliebige Taste. Wird er nicht erkannt, verbinde ihn hier.",
+    badge: "Verbunden",
     connecting: "Wähle deinen Controller in der Geräteauswahl des Browsers aus…",
     connected: "Verbunden: {{name}}",
     unsupported: "Dieser Controller kann nicht direkt verbunden werden. Versuche, ihn mit deinem Gerät zu koppeln.",

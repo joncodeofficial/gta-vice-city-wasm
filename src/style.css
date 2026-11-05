@@ -1502,7 +1502,8 @@ video {
 }
 
 /* Controller panel reuses the Saves/Skins panel and status styles. */
-.controller-option .userdata-status { margin-top: 0; }
-.controller-option .userdata-btn { min-height: 44px; margin-top: 10px; }
+.controller-option .userdata-btn { min-height: 44px; }
+.controller-badge { margin-left: auto; font-size: 0.82rem; font-weight: 600; color: #8fffd8; }
+.controller-badge::before { content: "● "; }
 .controller-option .userdata-btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
 body[data-is-touch="1"] .controller-option { display: none; }

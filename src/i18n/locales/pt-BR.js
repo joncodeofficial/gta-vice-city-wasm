@@ -51,9 +51,10 @@ export default {
   },
   controller: {
     title: "Controle",
-    connect: "Conectar controle",
-    idle: "Pareie seu controle e pressione qualquer botão ou clique em Conectar controle.",
-    nativeOnly: "Pareie seu controle, clique na página e pressione um botão do controle.",
+    connect: "Conectar",
+    note: "Pareie seu controle e pressione qualquer botão.",
+    noteHid: "Pareie seu controle e pressione qualquer botão. Se o jogo não o detectar, conecte-o aqui.",
+    badge: "Conectado",
     connecting: "Escolha seu controle no seletor de dispositivos do navegador…",
     connected: "Conectado: {{name}}",
     unsupported: "Este controle não pode ser conectado diretamente. Tente pareá-lo com seu dispositivo.",
