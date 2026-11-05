@@ -1507,3 +1507,4 @@ video {
 .controller-option .userdata-btn { min-height: 44px; }
 .controller-option .userdata-btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
 .controller-option .userdata-status { margin-bottom: 0; }
+body[data-is-touch="1"] .controller-option { display: none; }

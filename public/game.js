@@ -92,7 +92,7 @@ async function loadData() {
 
 async function startGame(e) {
     e.stopPropagation();
-    await window.vcController.connect();
+    await window.vcController?.connect();
     await resumeAudioContexts();
 
     if (isTouch && document.documentElement.requestFullscreen) {
@@ -155,8 +155,9 @@ function setStatus(text) {
 };
 
 async function loadGame(data) {
-    const hasController = isTouch || window.vcController.connected;
-    const gameIni = hasController ? revc_ini.replace(/^Method=\d+$/m, 'Method=1') : revc_ini;
+    // Only a fresh ini gets the pad-friendly control method; a saved one keeps the player's choice.
+    const useClassicControls = revc_ini === revc_iniDefault && window.vcController?.connected;
+    const gameIni = useClassicControls ? revc_ini.replace(/^Method=\d+$/m, 'Method=1') : revc_ini;
     var Module = {
         mainCalled: () => {
             try {
@@ -238,7 +239,7 @@ async function loadGame(data) {
     document.body.classList.add('gameIsStarted');
 
     const emulator = new GamepadEmulator();
-    window.vcController.attach(emulator);
+    window.vcController?.attach(emulator);
     if (!isTouch) return;
     const gamepad = emulator.AddEmulatedGamepad(0, true);
     const gamepadEmulatorConfig = {
