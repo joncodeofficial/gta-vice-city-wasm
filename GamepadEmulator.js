@@ -974,7 +974,7 @@ class GamepadEmulator {
 					get: () => EmulationMode.real
 				});
 
-				delete this.realGpadToPatchedIndexMap[cloned.index];
+				delete this.realGpadToPatchedIndexMap[gamepad.index];
 				delete this.patchedGpadToRealIndexMap[patchedIndex];
 
 				const newEvent = new Event(event.type || "gamepaddisconnected");

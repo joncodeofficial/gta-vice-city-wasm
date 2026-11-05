@@ -11,8 +11,8 @@
     <link rel="manifest" href="/gta-vice-city-wasm/manifest.json" />
     <link rel="apple-touch-icon" href="/gta-vice-city-wasm/icons/icon-192.png" />
     <meta name="theme-color" content="#05060a" />
-    <script type="module" crossorigin src="/gta-vice-city-wasm/assets/index-BQbgr3FW.js"></script>
-    <link rel="stylesheet" crossorigin href="/gta-vice-city-wasm/assets/index-vjx_VSZd.css">
+    <script type="module" crossorigin src="/gta-vice-city-wasm/assets/index-cMzo111T.js"></script>
+    <link rel="stylesheet" crossorigin href="/gta-vice-city-wasm/assets/index-DUy0M6hA.css">
   </head>
 
   <body
@@ -223,6 +223,16 @@
               >
             </label>
             <input type="file" id="skin-file-input" accept=".bmp,.png,.jpg,.jpeg,.zip,image/bmp,image/png,image/jpeg,application/zip" multiple hidden />
+          </details>
+
+          <details id="controller-panel" class="userdata-panel controller-option">
+            <summary>
+              <h2 data-i18n="controller.title">Controller</h2>
+              <span id="controller-badge" class="controller-badge" data-i18n="controller.badge" hidden>Connected</span>
+            </summary>
+            <p id="controller-note" class="userdata-note" data-i18n="controller.note">Pair your controller and press any button.</p>
+            <button id="connect-controller" class="userdata-btn" type="button" data-i18n="controller.connect" hidden>Connect</button>
+            <div id="controller-status" class="userdata-status" role="status" aria-live="polite" hidden></div>
           </details>
 
           <div
