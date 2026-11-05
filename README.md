@@ -15,6 +15,7 @@ You need the game files (`game.tar.gz`) once — see [How it works](#how-it-work
 - **Custom skins.** Change how Tommy looks with your own images.
 - **Cheats on demand.** Off by default; switch them on from the setup screen.
 - **Touch controls.** On-screen controls for phones and tablets.
+- **Controller support.** Pair a controller and press any button. If the browser doesn't detect it, Xbox, DualShock 4 and DualSense controllers can connect from the setup screen (Chrome and Edge).
 - **Install it as an app.** Add it to your desktop or home screen from the browser.
 
 ## How it works
