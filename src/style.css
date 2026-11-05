@@ -637,8 +637,7 @@ body.gameIsStarted .lang-switcher {
   accent-color: var(--accent);
 }
 
-.cheats-toggle,
-.controller-option {
+.cheats-toggle {
   margin: 14px 0;
   padding: 12px 16px;
   border: 1px solid var(--border);
@@ -1502,9 +1501,8 @@ video {
   }
 }
 
-/* Controller setup shares the option card and user-data feedback styles. */
-.controller-option-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.controller-option .userdata-btn { min-height: 44px; }
+/* Controller panel reuses the Saves/Skins panel and status styles. */
+.controller-option .userdata-status { margin-top: 0; }
+.controller-option .userdata-btn { min-height: 44px; margin-top: 10px; }
 .controller-option .userdata-btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
-.controller-option .userdata-status { margin-bottom: 0; }
 body[data-is-touch="1"] .controller-option { display: none; }
