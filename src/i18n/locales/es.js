@@ -49,6 +49,18 @@ export default {
     scriptLoad:
       "No se pudo cargar un archivo necesario ({{file}}). Recarga la página con Ctrl/Cmd + Mayús + R. Tus partidas y los archivos del juego no se ven afectados.",
   },
+  controller: {
+    title: "Mando",
+    connect: "Conectar",
+    note: "Empareja tu mando y pulsa cualquier botón.",
+    noteHid: "Empareja tu mando y pulsa cualquier botón. Si el juego no lo detecta, conéctalo aquí.",
+    badge: "Conectado",
+    connecting: "Elige tu mando en el selector de dispositivos del navegador…",
+    connected: "Conectado: {{name}}",
+    unsupported: "Este mando no se puede conectar directamente. Prueba a emparejarlo con tu dispositivo.",
+    permissionDenied: "Se ha denegado el acceso al mando. Permite el acceso en el navegador e inténtalo de nuevo.",
+    failed: "No se pudo conectar. Inténtalo de nuevo o usa el teclado y el ratón.",
+  },
   cheats: {
     enable: "Activar trucos",
   },

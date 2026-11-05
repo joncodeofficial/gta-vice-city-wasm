@@ -49,6 +49,18 @@ export default {
     scriptLoad:
       "Não foi possível carregar um arquivo necessário ({{file}}). Recarregue a página com Ctrl/Cmd + Shift + R. Seus jogos salvos e os arquivos do jogo não foram afetados.",
   },
+  controller: {
+    title: "Controle",
+    connect: "Conectar",
+    note: "Pareie seu controle e pressione qualquer botão.",
+    noteHid: "Pareie seu controle e pressione qualquer botão. Se o jogo não o detectar, conecte-o aqui.",
+    badge: "Conectado",
+    connecting: "Escolha seu controle no seletor de dispositivos do navegador…",
+    connected: "Conectado: {{name}}",
+    unsupported: "Este controle não pode ser conectado diretamente. Tente pareá-lo com seu dispositivo.",
+    permissionDenied: "O acesso ao controle foi negado. Permita o acesso no navegador e tente novamente.",
+    failed: "Não foi possível conectar. Tente novamente ou use o teclado e o mouse.",
+  },
   cheats: {
     enable: "Ativar trapaças",
   },

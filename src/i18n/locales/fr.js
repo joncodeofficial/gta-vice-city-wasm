@@ -49,6 +49,18 @@ export default {
     scriptLoad:
       "Un fichier nécessaire n’a pas pu être chargé ({{file}}). Rechargez la page avec Ctrl/Cmd + Maj + R. Vos sauvegardes et les fichiers du jeu ne sont pas affectés.",
   },
+  controller: {
+    title: "Manette",
+    connect: "Connecter",
+    note: "Associez votre manette et appuyez sur un bouton.",
+    noteHid: "Associez votre manette et appuyez sur un bouton. Si le jeu ne la détecte pas, connectez-la ici.",
+    badge: "Connectée",
+    connecting: "Choisissez votre manette dans le sélecteur de périphériques du navigateur…",
+    connected: "Connectée : {{name}}",
+    unsupported: "Cette manette ne peut pas se connecter directement. Essayez de l’associer à votre appareil.",
+    permissionDenied: "L’accès à la manette a été refusé. Autorisez l’accès dans le navigateur et réessayez.",
+    failed: "Connexion impossible. Réessayez ou utilisez le clavier et la souris.",
+  },
   cheats: {
     enable: "Activer les codes de triche",
   },

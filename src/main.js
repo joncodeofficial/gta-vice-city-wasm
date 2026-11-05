@@ -13,6 +13,7 @@ const ASSET_RELEASE_URL = import.meta.env.VITE_ASSET_URL;
 const BASE = import.meta.env.BASE_URL;
 
 const LEGACY_SCRIPT_SOURCES = [
+  `${BASE}controllers.js`,
   `${BASE}GamepadEmulator.js`,
   `${BASE}idbfs.js`,
   `${BASE}shared.js`,

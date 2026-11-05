@@ -224,6 +224,16 @@
             <input type="file" id="skin-file-input" accept=".bmp,.png,.jpg,.jpeg,.zip,image/bmp,image/png,image/jpeg,application/zip" multiple hidden />
           </details>
 
+          <details id="controller-panel" class="userdata-panel controller-option">
+            <summary>
+              <h2 data-i18n="controller.title">Controller</h2>
+              <span id="controller-badge" class="controller-badge" data-i18n="controller.badge" hidden>Connected</span>
+            </summary>
+            <p id="controller-note" class="userdata-note" data-i18n="controller.note">Pair your controller and press any button.</p>
+            <button id="connect-controller" class="userdata-btn" type="button" data-i18n="controller.connect" hidden>Connect</button>
+            <div id="controller-status" class="userdata-status" role="status" aria-live="polite" hidden></div>
+          </details>
+
           <div
             id="config-panel"
           >

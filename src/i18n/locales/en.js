@@ -52,6 +52,18 @@ export default {
     scriptLoad:
       "A required file could not be loaded ({{file}}). Reload the page with Ctrl/Cmd + Shift + R. Your saves and game files are not affected.",
   },
+  controller: {
+    title: "Controller",
+    connect: "Connect",
+    note: "Pair your controller and press any button.",
+    noteHid: "Pair your controller and press any button. If the game doesn't detect it, connect it here.",
+    badge: "Connected",
+    connecting: "Choose your controller in the browser’s device picker…",
+    connected: "Connected: {{name}}",
+    unsupported: "This controller cannot connect directly. Try pairing it with your device.",
+    permissionDenied: "Controller access was denied. Allow access in your browser and try again.",
+    failed: "Could not connect. Try again, or use keyboard and mouse.",
+  },
   cheats: {
     enable: "Enable cheats",
   },
