@@ -11,8 +11,8 @@
     <link rel="manifest" href="/gta-vice-city-wasm/manifest.json" />
     <link rel="apple-touch-icon" href="/gta-vice-city-wasm/icons/icon-192.png" />
     <meta name="theme-color" content="#05060a" />
-    <script type="module" crossorigin src="/gta-vice-city-wasm/assets/index-Bpy4n-nE.js"></script>
-    <link rel="stylesheet" crossorigin href="/gta-vice-city-wasm/assets/index-DUy0M6hA.css">
+    <script type="module" crossorigin src="/gta-vice-city-wasm/assets/index-D5SuiV_x.js"></script>
+    <link rel="stylesheet" crossorigin href="/gta-vice-city-wasm/assets/index-DMEN7Zew.css">
   </head>
 
   <body
@@ -109,10 +109,7 @@
           <p
             data-i18n-html="intro"
           >
-            Import your <code>game.tar.gz</code> once — it's stored locally in
-            your browser via OPFS and served by a Service Worker. No CDN, no
-            external server, no recurring downloads. After the first import it
-            works fully offline.
+            Bring your copy of <strong>GTA: Vice City for PC</strong> and play in your browser. Nothing is uploaded and it works offline.
           </p>
 
           <div
@@ -123,25 +120,21 @@
             </div>
             <h2 data-i18n="setup.title">Setup</h2>
             <p data-i18n="setup.note">
-              The imported archive is stored locally by this browser, so you can
-              come back later without reimporting unless you want to replace it.
+              Original PC version only (Steam, Rockstar Launcher or discs). You only do this once.
             </p>
 
             <div class="setup-actions-panel">
-              <a id="dl-link" class="dl-btn" href="#" download data-i18n="setup.download"
-                >Download game.tar.gz</a
-              >
-
-              <label class="file-picker" for="game-file-input">
-                <span class="file-picker-label" data-i18n="setup.select">Select game.tar.gz</span>
-                <span id="selected-file-name" class="file-picker-name" data-i18n="setup.noFile"
-                  >No file selected</span
+              <label id="game-drop" class="file-picker" for="game-zip-input">
+                <span class="file-picker-label" data-i18n="setup.select">Game files (PC)</span>
+                <span id="selected-file-name" class="file-picker-name" data-i18n="setup.drop"
+                  >Drop your game folder here or click to pick a .zip</span
                 >
               </label>
               <input
                 type="file"
-                id="game-file-input"
-                accept=".tar.gz,.gz,application/gzip"
+                id="game-zip-input"
+                class="game-input"
+                accept=".zip,application/zip"
               />
 
               <button
@@ -156,7 +149,7 @@
 
             <div id="setup-progress">
               <div class="setup-progress-head">
-                <span class="setup-progress-title" data-i18n="setup.importing">Importing game.tar.gz</span>
+                <span class="setup-progress-title" data-i18n="setup.importing">Importing game files</span>
                 <span id="setup-progress-percent" class="setup-progress-percent"
                   >0%</span
                 >
@@ -352,9 +345,9 @@
           <section class="instructions-panel">
             <h2 data-i18n="howto.title">How to play</h2>
             <ol class="instructions-list">
-              <li data-i18n="howto.step1">Download the game: press “Download game.tar.gz” and save the file on your computer. The game can’t run without it.</li>
-              <li data-i18n="howto.step2">Mount it: press “Select game.tar.gz” and choose the file you just downloaded.</li>
-              <li data-i18n="howto.step3">Wait for the import to finish until the status above says “Ready to play”.</li>
+              <li data-i18n="howto.step1">Install GTA: Vice City for PC (Steam, Rockstar Launcher or discs). Game files aren’t provided here.</li>
+              <li data-i18n="howto.step2">Drop the game folder onto “Game files (PC)”, or click it to pick a .zip (on phones).</li>
+              <li data-i18n="howto.step3">Wait a few minutes until it says “Ready to play”.</li>
               <li data-i18n="howto.step4">Press “Start to play” and wait for the game to load.</li>
               <li data-i18n="howto.step5">You only need to do this once: the game stays stored in this browser and works offline.</li>
             </ol>
