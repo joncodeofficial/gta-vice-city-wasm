@@ -6,7 +6,7 @@ Play GTA: Vice City right in your browser. Nothing to install: the game runs on 
 
 ![GTA: Vice City running in the browser, with a custom Spider-Man skin](public/demo.webp)
 
-You need the game files (`game.tar.gz`) once — see [How it works](#how-it-works).
+You need the game files (`game.tar.gz`) from your own copy of the game — see [How it works](#how-it-works). They are not provided here.
 
 ## What's included
 
@@ -20,7 +20,7 @@ You need the game files (`game.tar.gz`) once — see [How it works](#how-it-work
 
 ## How it works
 
-1. Download `game.tar.gz`
+1. Get `game.tar.gz` from your own legally owned copy of the game (this project does not host or distribute game files)
 2. Open the [live page](https://joncodeofficial.github.io/gta-vice-city-wasm/) and click **Select game.tar.gz** to import the file
 3. The archive is extracted into your browser's local storage (OPFS) — this only happens once
 4. Click **Start to play** and the game loads entirely from your device
@@ -93,3 +93,7 @@ This is an unofficial, non-commercial fan project. It is not affiliated with, en
 The source code in this repository does not include the game's data files (models, textures, audio, maps). It is built on an open-source reimplementation of the game engine, and you need your own legitimate copy of GTA: Vice City to use it. The maintainer does not authorize anyone to redistribute the game's files and is not responsible for how third parties obtain, host, or share them, nor for any consequences of unauthorized use of this project.
 
 This software is provided "as is", without warranty of any kind. See the [LICENSE](LICENSE) file for the full liability disclaimer.
+
+## Disclaimer
+
+This is an unofficial fan project, not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. *Grand Theft Auto* and *Vice City* are trademarks of Take-Two Interactive. This repository contains no game assets; you must own the game to play.
