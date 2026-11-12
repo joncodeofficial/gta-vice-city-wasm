@@ -7,8 +7,14 @@ import {
   setText,
   t,
 } from "./i18n/index.js";
-
-const ASSET_RELEASE_URL = import.meta.env.VITE_ASSET_URL;
+import {
+  GAME_ENTRIES,
+  IMPORT_TMP,
+  OPFS_VERSION,
+  PACKAGE_DATA,
+  PACKAGE_INDEX,
+  READY_MARKER,
+} from "./convert/layout.js";
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -88,43 +94,34 @@ async function checkReady() {
   try {
     const root = await navigator.storage.getDirectory();
 
-    let markerFile;
+    const getFile = async (path) => {
+      const parts = path.split("/");
+      let dir = root;
+      for (const part of parts.slice(0, -1)) dir = await dir.getDirectoryHandle(part);
+      return (await dir.getFileHandle(parts.at(-1))).getFile();
+    };
+
+    let marker;
     try {
-      const fh = await root.getFileHandle("_game_ready");
-      markerFile = await fh.getFile();
+      marker = await getFile(READY_MARKER);
     } catch {
-      return "OPFS marker '_game_ready' not found";
+      return `OPFS marker '${READY_MARKER}' not found`;
+    }
+    const version = await marker.text();
+    if (version !== OPFS_VERSION) {
+      return `OPFS marker version mismatch: got "${version}", expected "${OPFS_VERSION}"`;
     }
 
-    const version = await markerFile.text();
-    if (version !== "v4") {
-      return `OPFS marker version mismatch: got "${version}", expected "v4"`;
-    }
-
-    const requiredFiles = [
-      ["vcbr", "vc-sky-en-v6.data", 100 * 1024 * 1024],
-      ["vcbr", "vc-sky-en-v6.wasm", 0],
-      ["vcsky", "sha256sums.txt", 0],
-    ];
-
-    for (const [directoryName, fileName, minSize] of requiredFiles) {
-      let dir;
+    const minSizes = { [PACKAGE_DATA]: 100 * 1024 * 1024, [PACKAGE_INDEX]: 0 };
+    for (const [path, minSize] of Object.entries(minSizes)) {
+      let file;
       try {
-        dir = await root.getDirectoryHandle(directoryName);
+        file = await getFile(path);
       } catch {
-        return `OPFS directory not found: ${directoryName}/`;
+        return `OPFS file not found: ${path}`;
       }
-      let fh;
-      try {
-        fh = await dir.getFileHandle(fileName);
-      } catch {
-        return `OPFS file not found: ${directoryName}/${fileName}`;
-      }
-      if (minSize > 0) {
-        const f = await fh.getFile();
-        if (f.size < minSize) {
-          return `OPFS file too small: ${directoryName}/${fileName} is ${(f.size / 1024 / 1024).toFixed(1)} MB, need > ${minSize / 1024 / 1024} MB`;
-        }
+      if (file.size < minSize) {
+        return `OPFS file too small: ${path} is ${(file.size / 1024 / 1024).toFixed(1)} MB, need > ${minSize / 1024 / 1024} MB`;
       }
     }
 
@@ -136,11 +133,7 @@ async function checkReady() {
 
 // Returns null if OK, or a string describing the failure reason.
 async function verifyGameServing() {
-  const requiredUrls = [
-    "/vcbr/vc-sky-en-v6.data",
-    "/vcbr/vc-sky-en-v6.wasm",
-    "/vcsky/sha256sums.txt",
-  ];
+  const requiredUrls = [PACKAGE_DATA, PACKAGE_INDEX].map((path) => `/${path}`);
 
   try {
     for (const url of requiredUrls) {
@@ -190,7 +183,7 @@ async function clearGameFiles() {
   // Clear OPFS: delete all known directories and the marker file
   try {
     const root = await navigator.storage.getDirectory();
-    for (const name of ["vcbr", "vcsky", "_game_ready"]) {
+    for (const name of [...GAME_ENTRIES, IMPORT_TMP]) {
       try {
         await root.removeEntry(name, { recursive: true });
       } catch {
@@ -202,10 +195,61 @@ async function clearGameFiles() {
   }
 }
 
+const entryFile = (entry) => new Promise((resolve, reject) => entry.file(resolve, reject));
+
+// [{ path, file }] for every file in a dropped folder.
+async function readDroppedFolder(root) {
+  const out = [];
+  const walk = async (dir, prefix) => {
+    const reader = dir.createReader();
+    // Batches until an empty one.
+    for (;;) {
+      const batch = await new Promise((resolve, reject) => reader.readEntries(resolve, reject));
+      if (!batch.length) break;
+      for (const entry of batch) {
+        const path = `${prefix}/${entry.name}`;
+        if (entry.isDirectory) await walk(entry, path);
+        else out.push({ path, file: await entryFile(entry) });
+      }
+    }
+  };
+  await walk(root, root.name);
+  return out;
+}
+
+// Dropping a folder avoids the browser's "upload files?" prompt.
+function bindGameDrop(zone, { isBusy, onFile, onFolder, onError }) {
+  // Keeps a missed drop from opening the file.
+  window.addEventListener("dragover", (event) => event.preventDefault());
+  window.addEventListener("drop", (event) => event.preventDefault());
+
+  zone.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    if (!isBusy()) zone.dataset.dragging = "1";
+  });
+  zone.addEventListener("dragleave", () => delete zone.dataset.dragging);
+  zone.addEventListener("drop", async (event) => {
+    event.preventDefault();
+    delete zone.dataset.dragging;
+    if (isBusy()) return;
+    // Read entries before any await.
+    const entry = [...event.dataTransfer.items]
+      .map((item) => item.webkitGetAsEntry?.())
+      .find(Boolean);
+    if (!entry) return;
+    try {
+      if (entry.isFile) onFile(await entryFile(entry));
+      else onFolder(entry.name, await readDroppedFolder(entry));
+    } catch (err) {
+      onError(err);
+    }
+  });
+}
+
 async function initSetupFlow() {
   const overlay = document.getElementById("setup-overlay");
-  const downloadLink = document.getElementById("dl-link");
-  const fileInput = document.getElementById("game-file-input");
+  const zipInput = document.getElementById("game-zip-input");
+  const dropZone = document.getElementById("game-drop");
   const progress = document.getElementById("setup-progress");
   const progressBar = document.getElementById("setup-progress-bar");
   const progressLabel = document.getElementById("setup-progress-label");
@@ -218,8 +262,8 @@ async function initSetupFlow() {
 
   if (
     !overlay ||
-    !downloadLink ||
-    !fileInput ||
+    !zipInput ||
+    !dropZone ||
     !progress ||
     !progressBar ||
     !progressLabel ||
@@ -232,12 +276,6 @@ async function initSetupFlow() {
     return;
   }
 
-  if (ASSET_RELEASE_URL) {
-    downloadLink.href = ASSET_RELEASE_URL;
-  } else {
-    // No archive URL configured for this build (VITE_ASSET_URL unset).
-    downloadLink.style.display = "none";
-  }
 
   const showError = (key, options) => {
     errorBox.style.display = "block";
@@ -267,53 +305,68 @@ async function initSetupFlow() {
       setPlayAvailability(false);
       progress.style.display = "none";
       errorBox.style.display = "none";
-      setText(selectedFileName, "setup.noFile");
-      fileInput.value = "";
+      setText(selectedFileName, "setup.drop");
+      zipInput.value = "";
       resetFilesBtn.disabled = false;
       setText(resetFilesBtn, "setup.resetFiles");
     });
   }
 
-  // Neither reset nor a second import may run while the worker is still
-  // writing to OPFS. The download link stays usable.
-  const filePicker = document.querySelector(`label[for="${fileInput.id}"]`);
-  const setImporting = (importing) => {
-    fileInput.disabled = importing;
-    filePicker?.classList.toggle("disabled", importing);
-    if (resetFilesBtn) resetFilesBtn.disabled = importing;
+  // No reset or second import while the worker writes.
+  let importing = false;
+  const setImporting = (value) => {
+    importing = value;
+    zipInput.disabled = value;
+    dropZone.classList.toggle("disabled", value);
+    if (resetFilesBtn) resetFilesBtn.disabled = value;
   };
 
-  const runImport = async (file) => {
+  const ERROR_KEYS = {
+    notGameFolder: "errors.notGameFolder",
+    missingFiles: "errors.missingFiles",
+    zip: "errors.zip",
+  };
+
+  const runImport = (message) => {
     errorBox.style.display = "none";
     setImporting(true);
     progress.style.display = "block";
-    setText(progressLabel, "progress.readingFile");
+    setText(progressLabel, "progress.checking");
     progressPercent.textContent = "0%";
     progressBar.style.width = "0%";
     setPlayAvailability(false);
+    setStorageStatus("status.missing", "missing");
 
-    const worker = new Worker(`${BASE}extract-worker.js`);
+    const worker = new Worker(new URL("./convert/worker.js", import.meta.url), { type: "module" });
+    const finish = () => {
+      setImporting(false);
+      worker.terminate();
+    };
     worker.onerror = (error) => {
       console.error("[worker error]", error);
       showError("errors.worker", { message: error.message });
-      setImporting(false);
+      finish();
     };
-    worker.postMessage({ file });
     worker.onmessage = async (event) => {
       const message = event.data;
 
       if (message.type === "progress") {
-        progressBar.style.width = `${message.pct}%`;
-        progressPercent.textContent = `${message.pct}%`;
-        const labels = {
-          reading: "progress.reading",
-          decompressing: "progress.decompressing",
-          extracting: "progress.extracting",
-        };
-        setText(progressLabel, labels[message.phase] || "progress.working", {
-          done: message.done || 0,
-          total: message.total || "",
-        });
+        if (message.phase === "converting") {
+          const pct = Math.floor((message.done / message.total) * 100);
+          progressBar.style.width = `${pct}%`;
+          progressPercent.textContent = `${pct}%`;
+          setText(progressLabel, "progress.converting", { done: message.done, total: message.total });
+        } else if (message.phase === "unpacking") {
+          setText(progressLabel, "progress.unpacking", { file: message.file });
+        } else {
+          setText(progressLabel, "progress.checking");
+        }
+        return;
+      }
+
+      if (message.type === "warning") {
+        console.warn("[import] files differ from the known release:", message.files);
+        showError("errors.mismatch", { count: message.files.length });
         return;
       }
 
@@ -328,20 +381,21 @@ async function initSetupFlow() {
         );
         setPlayAvailability(isReady);
         if (isReady) setText(progressLabel, "progress.complete");
-        else {
-          setText(progressLabel, "progress.verifyFailed", { reason });
-            }
-        setImporting(false);
-        worker.terminate();
+        else setText(progressLabel, "progress.verifyFailed", { reason });
+        finish();
         return;
       }
 
       if (message.type === "error") {
-        showError("errors.generic", { message: message.message });
-          setImporting(false);
-        worker.terminate();
+        progress.style.display = "none";
+        showError(ERROR_KEYS[message.code] || "errors.generic", {
+          message: message.message,
+          files: (message.files || []).join(", "),
+        });
+        finish();
       }
     };
+    worker.postMessage(message);
   };
 
   setPlayAvailability(false);
@@ -377,24 +431,28 @@ async function initSetupFlow() {
     return;
   }
 
-  // Attach before the ready check so a file can still be imported after
-  // "Reset game data" without reloading the page.
-  fileInput.addEventListener("change", async () => {
-    console.log("[setup] file selected:", fileInput.files[0]?.name);
-    const file = fileInput.files[0];
-    if (!file) {
-      setText(selectedFileName, "setup.noFile");
-      return;
-    }
-
+  const startZip = (file) => {
     setRawText(selectedFileName, file.name);
-
-    if (!/\.tar\.gz$|\.gz$/i.test(file.name)) {
-      showError("errors.wrongFile");
+    if (!/\.zip$/i.test(file.name)) {
+      showError("errors.notZip");
       return;
     }
+    runImport({ kind: "zip", file });
+  };
 
-    await runImport(file);
+  zipInput.addEventListener("change", () => {
+    const file = zipInput.files[0];
+    if (file) startZip(file);
+  });
+
+  bindGameDrop(dropZone, {
+    isBusy: () => importing,
+    onFile: startZip,
+    onFolder(name, entries) {
+      setRawText(selectedFileName, name);
+      runImport({ kind: "folder", entries });
+    },
+    onError: (err) => showError("errors.generic", { message: err.message }),
   });
 
   const { ready, reason } = await waitForGameReady(2, 150);

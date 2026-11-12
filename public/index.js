@@ -1,7 +1,6 @@
 (function() {
     var modules = [
         'modules/runtime.js',
-        'modules/packages/en.js',
         'modules/loader.js',
         'modules/fs.js',
         'modules/audio.js',

@@ -34,7 +34,6 @@ if (isTouch) {
     Element.prototype.requestPointerLock = () => {};
 }
 
-const dataSize = 130 * 1024 * 1024;
 const textDecoder = new TextDecoder();
 let haveOriginalGame = true;
 
@@ -63,9 +62,18 @@ async function resumeAudioContexts() {
 }
 // The game data is English-only; the UI language (src/i18n) does not change it.
 data_content = `${replaceBR}vc-sky-en-v6.data`;
-wasm_content = `${replaceBR}vc-sky-en-v6.wasm`;
+const data_index = `${replaceBR}vc-sky-en-v6.json`;
+wasm_content = 'engine/vc-sky-en-v6.wasm';
 
 async function loadData() {
+    // Package index, written by the importer.
+    const indexResponse = await fetch(data_index, { cache: 'no-store' });
+    if (!indexResponse.ok) {
+        throw new Error(`Failed to load data index: ${indexResponse.status} ${indexResponse.url}`);
+    }
+    window.DATA_PACKAGE = await indexResponse.json();
+    const dataSize = window.DATA_PACKAGE.remote_package_size;
+
     const response = await fetch(data_content, { cache: 'no-store' });
     if (!response.ok) {
         throw new Error(`Failed to load data package: ${response.status} ${response.url}`);

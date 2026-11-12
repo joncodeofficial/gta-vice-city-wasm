@@ -372,7 +372,6 @@ body.gameIsStarted .lang-switcher {
   gap: 10px;
 }
 
-.dl-btn,
 .file-label,
 .click-to-play button {
   display: flex;
@@ -394,19 +393,6 @@ body.gameIsStarted .lang-switcher {
     filter 0.15s ease;
 }
 
-/* Download — cyan */
-.dl-btn {
-  background: linear-gradient(135deg, #00d2ff, #0098d4);
-  color: #030912;
-  border: none;
-  box-shadow: 0 4px 18px rgba(0, 210, 255, 0.22);
-}
-.dl-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0, 210, 255, 0.35);
-  filter: brightness(1.06);
-  color: #030912;
-}
 
 /* Reset button — subtle danger */
 .reset-btn {
@@ -511,42 +497,15 @@ body.gameIsStarted .lang-switcher {
   word-break: break-word;
 }
 
-/* numbered setup flow: 1 download, 2 select (a hidden step is skipped) */
-.start-container {
-  counter-reset: play-step;
-}
-.setup-actions-panel .dl-btn,
-.setup-actions-panel .file-picker {
-  position: relative;
-}
-.setup-actions-panel .dl-btn::before,
-.setup-actions-panel .file-picker::before {
-  counter-increment: play-step;
-  content: counter(play-step);
-  position: absolute;
-  top: 50%;
-  left: 14px;
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 23px;
-  padding-top: 1px; /* digits sit slightly high in their line box */
-  transform: translateY(-50%);
-  border: 1px solid rgba(0, 210, 255, 0.55);
-  border-radius: 50%;
-  background: #030912;
-  color: var(--accent-2);
-  font-size: 0.8rem;
-  font-weight: 800;
-  font-variant-numeric: tabular-nums; /* every digit gets the same width, so "1" centres */
-  letter-spacing: 0;
-  line-height: 1;
-}
-.setup-actions-panel .file-picker {
-  padding-left: 52px;
+.file-picker[data-dragging="1"] {
+  border-color: var(--accent-2);
+  background: rgba(0, 210, 255, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(0, 210, 255, 0.35),
+    0 0 26px rgba(0, 210, 255, 0.28);
 }
 
-#game-file-input {
+.game-input {
   display: none;
 }
 

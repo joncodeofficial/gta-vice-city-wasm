@@ -13,6 +13,7 @@
   },
   "packageManager": "pnpm@10.8.1",
   "dependencies": {
+    "@breezystack/lamejs": "1.2.7",
     "i18next": "^26.4.3",
     "i18next-browser-languagedetector": "^8.2.1"
   }

@@ -73,55 +73,17 @@
             function assert(check, msg) {
                 if (!check) throw new Error(msg)
             }
-            Module["FS_createPath"]("/", "vc-assets", true, true);
-            Module["FS_createPath"]("/vc-assets", "local", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "anim", true, true);
-            Module["FS_createPath"]("/vc-assets/local/anim", "cuts.img", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "audio", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "data", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data", "maps", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "airport", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "airportn", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "bank", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "bar", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "bridge", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "cisland", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "club", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "concerth", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "docks", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "downtown", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "downtows", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "golf", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "haiti", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "haitin", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "hotel", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "islandsf", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "lawyers", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "littleha", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "mall", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "mansion", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "nbeach", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "nbeachbt", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "nbeachw", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "oceandn", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "oceandrv", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "stadint", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "starisl", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "stripclb", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "washintn", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "washints", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data/maps", "yacht", true, true);
-            Module["FS_createPath"]("/vc-assets/local/data", "paths", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "fonts", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "models", true, true);
-            Module["FS_createPath"]("/vc-assets/local/models", "coll", true, true);
-            Module["FS_createPath"]("/vc-assets/local/models", "generic", true, true);
-            Module["FS_createPath"]("/vc-assets/local/models", "gta3.img", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "mp3", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "mss", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "skins", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "text", true, true);
-            Module["FS_createPath"]("/vc-assets/local", "txd", true, true);
+            // Directories from the package index.
+            var dirs = new Set();
+            for (var file of metadata["files"]) {
+                var parts = file["filename"].split("/").slice(1, -1);
+                for (var i = 1; i <= parts.length; i++) dirs.add(parts.slice(0, i).join("/"));
+            }
+            for (var dir of [...dirs].sort((a, b) => a.split("/").length - b.split("/").length)) {
+                var cut = dir.lastIndexOf("/");
+                var parent = cut < 0 ? "/" : "/" + dir.slice(0, cut);
+                Module["FS_createPath"](parent, dir.slice(cut + 1), true, true);
+            }
             for (var file of metadata["files"]) {
                 var name = file["filename"];
                 Module["addRunDependency"](`fp ${name}`)
@@ -155,5 +117,5 @@
             Module["preRun"].push(runWithFS)
         }
     }
-    loadPackage(DATA_PACKAGE)
+    loadPackage(window.DATA_PACKAGE)
 })();
