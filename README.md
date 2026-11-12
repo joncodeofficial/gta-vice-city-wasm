@@ -51,7 +51,7 @@ If your download is a `.rar` or `.7z`, unpack it first. *Reset game data* also d
 
 - A modern desktop browser with WebAssembly + OPFS + Service Worker support
 - Recommended: Chrome 110+, Firefox 111+, or Safari 16.4+
-- GTA: Vice City for PC installed (about 1.5 GB), and about 1.2 GB of free browser storage for the converted game
+- GTA: Vice City for PC installed (about 1.5 GB), and about 1.2 GB of free browser storage for the game
 
 ## Running locally
 
@@ -101,7 +101,3 @@ This is an unofficial, non-commercial fan project. It is not affiliated with, en
 The source code in this repository does not include the game's data files (models, textures, audio, maps). It is built on an open-source reimplementation of the game engine, and you need your own legitimate copy of GTA: Vice City to use it. The maintainer does not authorize anyone to redistribute the game's files and is not responsible for how third parties obtain, host, or share them, nor for any consequences of unauthorized use of this project.
 
 This software is provided "as is", without warranty of any kind. See the [LICENSE](LICENSE) file for the full liability disclaimer.
-
-## Disclaimer
-
-This is an unofficial fan project, not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. *Grand Theft Auto* and *Vice City* are trademarks of Take-Two Interactive. This repository contains no game assets; you must own the game to play.
