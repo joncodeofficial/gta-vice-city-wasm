@@ -1916,7 +1916,6 @@
   "text/french.gxt",
   "text/german.gxt",
   "text/italian.gxt",
-  "text/russian.gxt",
   "text/spanish.gxt",
   "txd/intro1.txd",
   "txd/intro2.txd",
@@ -1957,8 +1956,7 @@
   "models/nswbtns.txd",
   "models/ps3btns.txd",
   "models/x360btns.txd",
-  "revc.ini",
-  "text/russian.gxt"
+  "revc.ini"
  ],
  "sha256": {
   "cuts.img": "1a020de37e57dc07a106f97351b59ae5be6b54e6436c1f3965663ba0a6f9cfab",
