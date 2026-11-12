@@ -217,6 +217,23 @@ async function readDroppedFolder(root) {
   return out;
 }
 
+// [{ path, file }] for every file in a folder picked with showDirectoryPicker.
+async function readPickedFolder(root) {
+  const out = [];
+  const walk = async (dir, prefix) => {
+    for await (const handle of dir.values()) {
+      const path = `${prefix}/${handle.name}`;
+      if (handle.kind === "directory") await walk(handle, path);
+      else out.push({ path, file: await handle.getFile() });
+    }
+  };
+  await walk(root, root.name);
+  return out;
+}
+
+// Phones can't pick folders, so they get the .zip picker.
+const canPickFolders = () => !window.matchMedia("(pointer: coarse)").matches;
+
 // Dropping a folder avoids the browser's "upload files?" prompt.
 function bindGameDrop(zone, { isBusy, onFile, onFolder, onError }) {
   // Keeps a missed drop from opening the file.
@@ -249,6 +266,7 @@ function bindGameDrop(zone, { isBusy, onFile, onFolder, onError }) {
 async function initSetupFlow() {
   const overlay = document.getElementById("setup-overlay");
   const zipInput = document.getElementById("game-zip-input");
+  const folderInput = document.getElementById("game-folder-input");
   const dropZone = document.getElementById("game-drop");
   const progress = document.getElementById("setup-progress");
   const progressBar = document.getElementById("setup-progress-bar");
@@ -263,6 +281,7 @@ async function initSetupFlow() {
   if (
     !overlay ||
     !zipInput ||
+    !folderInput ||
     !dropZone ||
     !progress ||
     !progressBar ||
@@ -305,8 +324,9 @@ async function initSetupFlow() {
       setPlayAvailability(false);
       progress.style.display = "none";
       errorBox.style.display = "none";
-      setText(selectedFileName, "setup.drop");
+      setText(selectedFileName, canPickFolders() ? "setup.drop" : "setup.pickZip");
       zipInput.value = "";
+      folderInput.value = "";
       resetFilesBtn.disabled = false;
       setText(resetFilesBtn, "setup.resetFiles");
     });
@@ -317,6 +337,7 @@ async function initSetupFlow() {
   const setImporting = (value) => {
     importing = value;
     zipInput.disabled = value;
+    folderInput.disabled = value;
     dropZone.classList.toggle("disabled", value);
     if (resetFilesBtn) resetFilesBtn.disabled = value;
   };
@@ -440,18 +461,48 @@ async function initSetupFlow() {
     runImport({ kind: "zip", file });
   };
 
+  const startFolder = (name, entries) => {
+    setRawText(selectedFileName, name);
+    runImport({ kind: "folder", entries });
+  };
+
   zipInput.addEventListener("change", () => {
     const file = zipInput.files[0];
     if (file) startZip(file);
   });
 
+  folderInput.addEventListener("change", () => {
+    const files = [...folderInput.files];
+    if (!files.length) return;
+    const entries = files.map((file) => ({ path: file.webkitRelativePath, file }));
+    startFolder(entries[0].path.split("/")[0], entries);
+  });
+
+  // Chrome and Edge get the native folder picker (no "upload files?" prompt).
+  const pick = async () => {
+    if (importing) return;
+    if (!canPickFolders()) return zipInput.click();
+    if (!window.showDirectoryPicker) return folderInput.click();
+    try {
+      const dir = await window.showDirectoryPicker({ mode: "read" });
+      startFolder(dir.name, await readPickedFolder(dir));
+    } catch (err) {
+      if (err.name !== "AbortError") showError("errors.generic", { message: err.message });
+    }
+  };
+  dropZone.addEventListener("click", pick);
+  dropZone.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      pick();
+    }
+  });
+  if (!canPickFolders()) setText(selectedFileName, "setup.pickZip");
+
   bindGameDrop(dropZone, {
     isBusy: () => importing,
     onFile: startZip,
-    onFolder(name, entries) {
-      setRawText(selectedFileName, name);
-      runImport({ kind: "folder", entries });
-    },
+    onFolder: startFolder,
     onError: (err) => showError("errors.generic", { message: err.message }),
   });
 

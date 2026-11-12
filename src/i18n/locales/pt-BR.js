@@ -13,7 +13,8 @@ export default {
     title: "Configuração",
     note: "Só a versão original de PC (Steam, Rockstar Launcher ou discos). Só precisa fazer uma vez.",
     select: "Arquivos do jogo (PC)",
-    drop: "Solte aqui a pasta do jogo ou clique para escolher um .zip",
+    drop: "Solte aqui a pasta do jogo ou clique para escolhê-la",
+    pickZip: "Toque para escolher um .zip da pasta do jogo",
     resetFiles: "Apagar jogo",
     resetFilesConfirm: "Os arquivos do jogo importados serão apagados. Seus saves e skins são mantidos.\n\nVocê vai precisar importar a pasta do jogo de novo para jogar. Continuar?",
     resetting: "Redefinindo…",
@@ -161,7 +162,7 @@ export default {
   howto: {
     title: "Como jogar",
     step1: "Instale o GTA: Vice City para PC (Steam, Rockstar Launcher ou discos). Os arquivos do jogo não são fornecidos aqui.",
-    step2: "Solte a pasta do jogo em “Arquivos do jogo (PC)”, ou clique nele para escolher um .zip (no celular).",
+    step2: "Solte a pasta do jogo em “Arquivos do jogo (PC)” ou clique nele para escolher a pasta. No celular, escolha um .zip dela.",
     step3: "Espere alguns minutos até aparecer “Pronto para jogar”.",
     step4: "Clique em “Começar a jogar” e espere o jogo carregar.",
     step5: "Você só precisa fazer isso uma vez: o jogo fica salvo neste navegador e funciona offline.",

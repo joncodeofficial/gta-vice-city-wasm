@@ -21,7 +21,7 @@ You need GTA: Vice City for PC installed on your computer — see [How it works]
 ## How it works
 
 1. Install GTA: Vice City for PC from your own copy (Steam, Rockstar Games Launcher or the original discs)
-2. Open the [live page](https://joncodeofficial.github.io/gta-vice-city-wasm/) and drag the folder where the game is installed onto **Game files (PC)**. You can also click it and choose a `.zip` of that folder (the way to do it on a phone)
+2. Open the [live page](https://joncodeofficial.github.io/gta-vice-city-wasm/) and drop the folder where the game is installed onto **Game files (PC)**, or click it to choose the folder. On a phone, choose a `.zip` of that folder
 3. The game loads into your browser's local storage (OPFS). It takes a few minutes and only happens once. Nothing is uploaded
 4. Click **Start to play** and the game loads entirely from your device
 
