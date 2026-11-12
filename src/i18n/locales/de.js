@@ -147,9 +147,6 @@ export default {
     maxFps: "Max. FPS:",
     unlimited: "(0 = unbegrenzt)",
   },
-  cover: {
-    alt: "Cover von Grand Theft Auto Vice City",
-  },
   disclaimer: {
     label: "HAFTUNGSAUSSCHLUSS:",
     text: "Inoffizielles Fanprojekt, das nicht mit Rockstar Games oder Take-Two Interactive verbunden ist und von diesen weder unterstützt noch gesponsert wird. Die Spieldateien sind nicht enthalten – du brauchst deine eigene legale Kopie von Grand Theft Auto: Vice City, um zu spielen. Alle Marken und Urheberrechte gehören ihren jeweiligen Inhabern.",

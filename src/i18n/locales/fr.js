@@ -147,9 +147,6 @@ export default {
     maxFps: "FPS max :",
     unlimited: "(0 = illimité)",
   },
-  cover: {
-    alt: "Jaquette de Grand Theft Auto Vice City",
-  },
   disclaimer: {
     label: "AVERTISSEMENT :",
     text: "Projet de fans non officiel, sans lien avec Rockstar Games ou Take-Two Interactive, ni approuvé ou sponsorisé par eux. Il n’inclut pas les fichiers de données du jeu : vous avez besoin de votre propre copie légitime de Grand Theft Auto: Vice City pour jouer. Toutes les marques et tous les droits d’auteur appartiennent à leurs propriétaires respectifs.",

@@ -147,9 +147,6 @@ export default {
     maxFps: "अधिकतम FPS:",
     unlimited: "(0 = असीमित)",
   },
-  cover: {
-    alt: "Grand Theft Auto Vice City का कवर",
-  },
   disclaimer: {
     label: "अस्वीकरण:",
     text: "यह एक अनौपचारिक फ़ैन प्रोजेक्ट है, जो Rockstar Games या Take-Two Interactive से जुड़ा नहीं है और न ही उनके द्वारा समर्थित या प्रायोजित है। इसमें गेम की डेटा फ़ाइलें शामिल नहीं हैं; खेलने के लिए आपके पास Grand Theft Auto: Vice City की अपनी वैध कॉपी होनी चाहिए। सभी ट्रेडमार्क और कॉपीराइट उनके संबंधित मालिकों के हैं।",

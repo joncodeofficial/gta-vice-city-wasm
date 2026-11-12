@@ -828,29 +828,6 @@ label.file-picker:hover {
   color: var(--accent-2);
 }
 
-/* ─── Cover image ────────────────────────────────────────────── */
-.cover-panel {
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-inner);
-  background: var(--surface-2);
-}
-
-.cover-image {
-  display: block;
-  width: 100%;
-  height: 600px;
-  object-fit: cover;
-  object-position: center top;
-  transition:
-    transform 0.4s ease,
-    filter 0.4s ease;
-}
-.cover-panel:hover .cover-image {
-  transform: scale(1.03);
-  filter: brightness(1.05) saturate(1.1);
-}
-
 /* ─── Instructions ───────────────────────────────────────────── */
 .instructions-panel h2 {
   margin: 0 0 12px;

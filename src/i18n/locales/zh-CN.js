@@ -144,9 +144,6 @@ export default {
     maxFps: "最大 FPS：",
     unlimited: "（0 = 不限制）",
   },
-  cover: {
-    alt: "Grand Theft Auto Vice City 封面",
-  },
   disclaimer: {
     label: "免责声明：",
     text: "非官方粉丝项目，与 Rockstar Games 或 Take-Two Interactive 无关，也未获得其认可或赞助。本项目不包含游戏数据文件，你需要拥有自己的 Grand Theft Auto: Vice City 正版副本才能游玩。所有商标和版权归其各自所有者所有。",
