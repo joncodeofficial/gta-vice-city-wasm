@@ -43,10 +43,12 @@ export default {
     apis: "Votre navigateur ne prend pas en charge les API nécessaires (OPFS / Service Worker). Utilisez Chrome, Firefox ou Safari 15.2+.",
     missingFeatures:
       "Il manque des fonctionnalités nécessaires à votre navigateur : {{features}}. Utilisez Chrome 110+, Firefox 111+ ou Safari 16.4+.",
-    notGameFolder: "Ce ne sont pas des fichiers PC de GTA: Vice City (models/gta3.img introuvable).",
-    missingFiles: "Fichiers du jeu manquants : {{files}}.",
-    zip: "Impossible de lire le .zip : {{message}}",
-    notZip: "Déposez le dossier du jeu ou choisissez un .zip. Décompressez d’abord les .rar ou .7z.",
+    notGameFolder: "Ce n’est pas une installation PC de GTA: Vice City. Choisissez le dossier où le jeu est installé.",
+    discImage: "Ce sont des images disque (.iso). Installez d’abord le jeu, puis choisissez le dossier installé.",
+    missingFiles: "Le jeu est incomplet, il manque : {{files}}. Réinstallez-le ou choisissez un autre dossier.",
+    zip: "Impossible de lire ce .zip. Il est peut-être endommagé ou protégé par mot de passe. Essayez avec le dossier du jeu.",
+    notZip: "Seuls le dossier du jeu ou un .zip fonctionnent. Décompressez d’abord les .rar ou .7z.",
+    storage: "Pas assez d’espace libre. Le jeu a besoin d’environ 1,2 Go dans ce navigateur.",
     mismatch: "{{count}} fichiers diffèrent de la version PC testée. Le jeu risque de mal fonctionner.",
     scriptLoad:
       "Un fichier nécessaire n’a pas pu être chargé ({{file}}). Rechargez la page avec Ctrl/Cmd + Maj + R. Vos sauvegardes et les fichiers du jeu ne sont pas affectés.",

@@ -350,8 +350,10 @@ async function initSetupFlow() {
 
   const ERROR_KEYS = {
     notGameFolder: "errors.notGameFolder",
+    discImage: "errors.discImage",
     missingFiles: "errors.missingFiles",
     zip: "errors.zip",
+    storage: "errors.storage",
   };
 
   const runImport = (message) => {
@@ -414,6 +416,7 @@ async function initSetupFlow() {
       }
 
       if (message.type === "error") {
+        if (message.message) console.error("[import]", message.code, message.message);
         progress.style.display = "none";
         showError(ERROR_KEYS[message.code] || "errors.generic", {
           message: message.message,
@@ -460,6 +463,10 @@ async function initSetupFlow() {
 
   const startZip = (file) => {
     setRawText(selectedFileName, file.name);
+    if (/\.iso$/i.test(file.name)) {
+      showError("errors.discImage");
+      return;
+    }
     if (!/\.zip$/i.test(file.name)) {
       showError("errors.notZip");
       return;

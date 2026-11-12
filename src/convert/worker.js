@@ -95,7 +95,10 @@ async function run(message) {
   }
 
   const install = indexInstall(source.paths);
-  if (!install) throw new ImportError("notGameFolder");
+  if (!install) {
+    const hasDisc = source.paths.some((p) => /\.iso$/i.test(p));
+    throw new ImportError(hasDisc ? "discImage" : "notGameFolder");
+  }
 
   const { missing, mismatched } = await validateInstall(install, async (path) =>
     source.size(path) > HASH_LIMIT ? null : sha256(await source.read(path)),
@@ -153,6 +156,8 @@ self.onmessage = async (event) => {
     console.error("[convert]", err);
     if (err instanceof ImportError) {
       self.postMessage({ type: "error", code: err.code, ...err.details });
+    } else if (err.name === "QuotaExceededError") {
+      self.postMessage({ type: "error", code: "storage" });
     } else {
       self.postMessage({ type: "error", code: "generic", message: err.message });
     }
