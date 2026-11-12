@@ -499,13 +499,73 @@ label.file-picker:hover {
 
 #game-drop {
   cursor: default;
+  border-style: dashed;
 }
 
+/* auto-fit: a lone button (phones) takes the full width */
 .file-picker-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 8px;
-  margin-top: 6px;
+  margin-top: 8px;
+}
+
+.game-pick-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(0, 210, 255, 0.25);
+  border-radius: var(--radius-btn);
+  background: rgba(0, 210, 255, 0.04);
+  color: var(--text-1);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    border-color 0.15s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+
+.game-pick-btn[hidden] {
+  display: none;
+}
+
+.game-pick-btn svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.game-pick-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--accent-2);
+  background: rgba(0, 210, 255, 0.08);
+  box-shadow: var(--glow-cyan);
+}
+
+.game-pick-btn:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.game-pick-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#game-drop[data-dragging="1"] {
+  border-style: solid;
 }
 
 .file-picker[data-dragging="1"] {

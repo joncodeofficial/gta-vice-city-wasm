@@ -127,11 +127,18 @@
                   >Drop your game folder or .zip here</span
                 >
                 <span class="file-picker-actions">
-                  <button id="game-folder-btn" class="userdata-btn" type="button" data-i18n="setup.chooseFolder">
-                    Choose folder
+                  <button id="game-folder-btn" class="game-pick-btn" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    </svg>
+                    <span data-i18n="setup.chooseFolder">Choose folder</span>
                   </button>
-                  <button id="game-zip-btn" class="userdata-btn" type="button" data-i18n="setup.chooseZip">
-                    Choose .zip
+                  <button id="game-zip-btn" class="game-pick-btn" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 3h9l4 4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+                      <path d="M11 3v2m0 2v2m0 2v2m-1 2h2v3h-2z" />
+                    </svg>
+                    <span data-i18n="setup.chooseZip">Choose .zip</span>
                   </button>
                 </span>
               </div>
