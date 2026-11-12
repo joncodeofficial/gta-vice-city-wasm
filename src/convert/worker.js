@@ -1,8 +1,10 @@
 // Imports a PC install into OPFS. Posts progress, warning, error and done.
+// Resumes an interrupted import of the same install (see IMPORT_JOURNAL).
 
 import {
   FETCHED_DIR,
   GAME_ENTRIES,
+  IMPORT_JOURNAL,
   IMPORT_TMP,
   OPFS_VERSION,
   PACKAGE_DATA,
@@ -10,6 +12,7 @@ import {
   READY_MARKER,
   createPackageIndex,
 } from "./layout.js";
+import { removeEntry, syncAccess } from "./opfs.js";
 import { convertInstall, indexInstall, validateInstall } from "./plan.js";
 import { folderSource, zipSource, ZipError } from "./sources.js";
 
@@ -25,11 +28,24 @@ class ImportError extends Error {
   }
 }
 
-async function removeEntry(dir, name) {
+// Calls fn at most every 200 ms.
+function throttle(fn) {
+  let last = 0;
+  return (...args) => {
+    const now = Date.now();
+    if (now - last > 200) {
+      last = now;
+      fn(...args);
+    }
+  };
+}
+
+async function readJournal(root) {
   try {
-    await dir.removeEntry(name, { recursive: true });
+    const file = await (await root.getFileHandle(IMPORT_JOURNAL)).getFile();
+    return JSON.parse(await file.text());
   } catch {
-    // not there
+    return null;
   }
 }
 
@@ -55,7 +71,7 @@ function writer(root) {
     async write(path, bytes) {
       const dir = await dirFor(path);
       const handle = await dir.getFileHandle(path.split("/").pop(), { create: true });
-      const access = await handle.createSyncAccessHandle();
+      const access = await syncAccess(handle);
       try {
         access.truncate(0);
         access.write(bytes, { at: 0 });
@@ -67,7 +83,7 @@ function writer(root) {
     async open(path) {
       const dir = await dirFor(path);
       const handle = await dir.getFileHandle(path.split("/").pop(), { create: true });
-      const access = await handle.createSyncAccessHandle();
+      const access = await syncAccess(handle);
       access.truncate(0);
       return access;
     },
@@ -85,9 +101,9 @@ async function run(message) {
   try {
     source =
       message.kind === "zip"
-        ? await zipSource(message.file, tmp, (file) =>
+        ? await zipSource(message.file, tmp, throttle((file) =>
             post({ type: "progress", phase: "unpacking", file: file.split("/").pop() }),
-          )
+          ))
         : folderSource(message.entries);
   } catch (err) {
     if (err instanceof ZipError) throw new ImportError("zip", { message: err.message });
@@ -106,17 +122,28 @@ async function run(message) {
   if (missing.length) throw new ImportError("missingFiles", { files: missing });
   if (mismatched.length) post({ type: "warning", code: "mismatch", files: mismatched });
 
+  // Same install as an interrupted import: keep its fetched files.
+  const sizeOf = (p) => source.size(install.get(p));
+  const fingerprint = [source.paths.length, sizeOf("models/gta3.img"), sizeOf("audio/sfx.raw")].join(":");
+  const journal = await readJournal(root);
+  const skipFetched = journal?.fingerprint === fingerprint ? journal.count : 0;
+  for (const name of GAME_ENTRIES) {
+    if (!(skipFetched && name === FETCHED_DIR.split("/")[0])) await removeEntry(root, name);
+  }
+
   // Marker goes last, so a half import is never ready.
-  for (const name of GAME_ENTRIES) await removeEntry(root, name);
   const out = writer(root);
   const data = await out.open(PACKAGE_DATA);
   const index = createPackageIndex();
-  let lastPost = 0;
+  const encode = (s) => new TextEncoder().encode(s);
+  let written = skipFetched;
+  const progress = throttle((done, total) => post({ type: "progress", phase: "converting", done, total }));
 
   try {
     await convertInstall({
       source,
       index: install,
+      skipFetched,
       async readRevcFile(path) {
         const response = await fetch(`${BASE}revc/${path}`);
         if (!response.ok) throw new Error(`could not load revc/${path}: ${response.status}`);
@@ -127,14 +154,14 @@ async function run(message) {
           data.write(bytes, { at: index.add(path, bytes.length) });
         } else {
           await out.write(`${FETCHED_DIR}/${path}`, bytes);
+          if (++written % 100 === 0) {
+            await out.write(IMPORT_JOURNAL, encode(JSON.stringify({ fingerprint, count: written })));
+          }
         }
       },
       onProgress(done, total) {
-        const now = Date.now();
-        if (now - lastPost > 200 || done === total) {
-          lastPost = now;
-          post({ type: "progress", phase: "converting", done, total });
-        }
+        if (done === total) post({ type: "progress", phase: "converting", done, total });
+        else progress(done, total);
       },
     });
     data.flush();
@@ -142,14 +169,16 @@ async function run(message) {
     data.close();
   }
 
-  const encode = (s) => new TextEncoder().encode(s);
   await out.write(PACKAGE_INDEX, encode(JSON.stringify(index)));
   await removeEntry(root, IMPORT_TMP);
+  await removeEntry(root, IMPORT_JOURNAL);
   await out.write(READY_MARKER, encode(OPFS_VERSION));
   post({ type: "done" });
 }
 
 self.onmessage = async (event) => {
+  // Tells the page this worker is alive during long steps.
+  const heartbeat = setInterval(() => self.postMessage({ type: "heartbeat" }), 10_000);
   try {
     await run(event.data);
   } catch (err) {
@@ -166,5 +195,7 @@ self.onmessage = async (event) => {
     } catch {
       // best effort
     }
+  } finally {
+    clearInterval(heartbeat);
   }
 };

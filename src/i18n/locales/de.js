@@ -32,13 +32,13 @@ export default {
     checking: "Spieldateien werden geprüft…",
     unpacking: "Die .zip wird geöffnet…",
     converting: "Spieldateien werden geladen… {{done}} / {{total}}",
+    resuming: "Der Import wurde unterbrochen. Wird fortgesetzt…",
     verifying: "Import abgeschlossen. Dateien werden geprüft…",
     complete: "Import abgeschlossen. Bereit zum Spielen.",
     verifyFailed: "Prüfung fehlgeschlagen: {{reason}}",
   },
   errors: {
     generic: "Fehler: {{message}}",
-    worker: "Worker-Fehler: {{message}}",
     serviceWorker: "Service-Worker-Fehler: {{message}}",
     apis: "Dein Browser unterstützt die benötigten APIs (OPFS / Service Worker) nicht. Bitte nutze Chrome, Firefox oder Safari 15.2+.",
     missingFeatures:
@@ -49,6 +49,7 @@ export default {
     zip: "Diese .zip kann nicht gelesen werden. Sie ist evtl. beschädigt oder passwortgeschützt. Versuch es mit dem Spielordner.",
     notZip: "Nur der Spielordner oder eine .zip funktionieren. Entpacke .rar- oder .7z-Dateien zuerst.",
     storage: "Nicht genug freier Speicher. Das Spiel braucht in diesem Browser etwa 1,2 GB.",
+    stalled: "Der Import bricht immer wieder ab. Lass diesen Tab offen im Vordergrund, lade die Seite neu und versuch es noch einmal.",
     mismatch: "{{count}} Dateien weichen von der getesteten PC-Version ab. Das Spiel läuft evtl. nicht richtig.",
     scriptLoad:
       "Eine benötigte Datei konnte nicht geladen werden ({{file}}). Lade die Seite mit Strg/Cmd + Umschalt + R neu. Deine Spielstände und Spieldateien sind davon nicht betroffen.",

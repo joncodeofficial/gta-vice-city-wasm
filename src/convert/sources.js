@@ -1,5 +1,7 @@
 // Install sources for plan.js, read lazily with File.slice.
 
+import { syncAccess } from "./opfs.js";
+
 // entries: [{ path, file }]
 export function folderSource(entries) {
   const byPath = new Map();
@@ -94,6 +96,7 @@ async function readCentralDirectory(file) {
 }
 
 // tmpDir: OPFS dir for unpacked big entries; the caller removes it.
+// onUnpack(path) is called often while one is unpacked.
 export async function zipSource(file, tmpDir, onUnpack) {
   const entries = await readCentralDirectory(file);
   const unpacked = new Map();
@@ -137,9 +140,8 @@ export async function zipSource(file, tmpDir, onUnpack) {
       return file.slice(start, start + e.size);
     }
     if (!unpacked.has(path)) {
-      onUnpack?.(path);
       const handle = await tmpDir.getFileHandle(`f${unpacked.size}`, { create: true });
-      const access = await handle.createSyncAccessHandle();
+      const access = await syncAccess(handle);
       try {
         access.truncate(0);
         let at = 0;
@@ -149,6 +151,7 @@ export async function zipSource(file, tmpDir, onUnpack) {
           if (done) break;
           access.write(value, { at });
           at += value.length;
+          onUnpack?.(path);
         }
         access.flush();
       } finally {

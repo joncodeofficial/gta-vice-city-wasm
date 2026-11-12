@@ -9,6 +9,7 @@ import {
 } from "./i18n/index.js";
 import {
   GAME_ENTRIES,
+  IMPORT_JOURNAL,
   IMPORT_TMP,
   OPFS_VERSION,
   PACKAGE_DATA,
@@ -183,7 +184,7 @@ async function clearGameFiles() {
   // Clear OPFS: delete all known directories and the marker file
   try {
     const root = await navigator.storage.getDirectory();
-    for (const name of [...GAME_ENTRIES, IMPORT_TMP]) {
+    for (const name of [...GAME_ENTRIES, IMPORT_TMP, IMPORT_JOURNAL]) {
       try {
         await root.removeEntry(name, { recursive: true });
       } catch {
@@ -356,28 +357,56 @@ async function initSetupFlow() {
     storage: "errors.storage",
   };
 
-  const runImport = (message) => {
-    errorBox.style.display = "none";
-    setImporting(true);
-    progress.style.display = "block";
-    setText(progressLabel, "progress.checking");
-    progressPercent.textContent = "0%";
-    progressBar.style.width = "0%";
-    setPlayAvailability(false);
-    setStorageStatus("status.missing", "missing");
+  // A worker the browser kills (memory, a frozen tab…) just goes quiet. If
+  // it says nothing for this long, a new one resumes where it got to.
+  const STALL_MS = 60_000;
+  const MAX_RESUMES = 3;
+
+  const runImport = (input, attempt = 0) => {
+    if (attempt === 0) {
+      errorBox.style.display = "none";
+      setImporting(true);
+      progress.style.display = "block";
+      setText(progressLabel, "progress.checking");
+      progressPercent.textContent = "0%";
+      progressBar.style.width = "0%";
+      setPlayAvailability(false);
+      setStorageStatus("status.missing", "missing");
+    } else {
+      setText(progressLabel, "progress.resuming");
+    }
 
     const worker = new Worker(new URL("./convert/worker.js", import.meta.url), { type: "module" });
+    let stallTimer;
     const finish = () => {
+      clearTimeout(stallTimer);
       setImporting(false);
       worker.terminate();
     };
+    const resume = (reason) => {
+      clearTimeout(stallTimer);
+      worker.terminate();
+      console.warn(`[import] ${reason}, attempt ${attempt + 1}`);
+      if (attempt < MAX_RESUMES) {
+        runImport(input, attempt + 1);
+        return;
+      }
+      progress.style.display = "none";
+      showError("errors.stalled");
+      setImporting(false);
+    };
+    const watch = () => {
+      clearTimeout(stallTimer);
+      stallTimer = setTimeout(() => resume("worker stopped responding"), STALL_MS);
+    };
+    watch();
     worker.onerror = (error) => {
-      console.error("[worker error]", error);
-      showError("errors.worker", { message: error.message });
-      finish();
+      error.preventDefault?.();
+      resume(`worker crashed: ${error.message}`);
     };
     worker.onmessage = async (event) => {
       const message = event.data;
+      watch();
 
       if (message.type === "progress") {
         if (message.phase === "converting") {
@@ -400,6 +429,7 @@ async function initSetupFlow() {
       }
 
       if (message.type === "done") {
+        clearTimeout(stallTimer);
         progressBar.style.width = "100%";
         progressPercent.textContent = "100%";
         setText(progressLabel, "progress.verifying");
@@ -425,7 +455,7 @@ async function initSetupFlow() {
         finish();
       }
     };
-    worker.postMessage(message);
+    worker.postMessage(input);
   };
 
   setPlayAvailability(false);

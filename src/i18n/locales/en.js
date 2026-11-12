@@ -35,13 +35,13 @@ export default {
     checking: "Checking game files…",
     unpacking: "Opening the .zip…",
     converting: "Loading game files… {{done}} / {{total}}",
+    resuming: "The import stopped. Resuming…",
     verifying: "Import complete. Verifying files…",
     complete: "Import complete. Ready to play.",
     verifyFailed: "Verification failed: {{reason}}",
   },
   errors: {
     generic: "Error: {{message}}",
-    worker: "Worker error: {{message}}",
     serviceWorker: "Service Worker error: {{message}}",
     apis: "Your browser does not support the required APIs (OPFS / Service Worker). Please use Chrome, Firefox or Safari 15.2+.",
     missingFeatures:
@@ -52,6 +52,7 @@ export default {
     zip: "This .zip can’t be read. It may be damaged or password-protected. Try the game folder instead.",
     notZip: "Only the game folder or a .zip work. Unpack .rar or .7z files first.",
     storage: "Not enough free space. The game needs about 1.2 GB in this browser.",
+    stalled: "The import keeps stopping. Keep this tab open in front, reload the page and try again.",
     mismatch: "{{count}} files differ from the tested PC version. The game may not work well.",
     scriptLoad:
       "A required file could not be loaded ({{file}}). Reload the page with Ctrl/Cmd + Shift + R. Your saves and game files are not affected.",

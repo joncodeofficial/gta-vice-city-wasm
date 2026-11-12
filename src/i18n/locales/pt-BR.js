@@ -32,13 +32,13 @@ export default {
     checking: "Verificando arquivos do jogo…",
     unpacking: "Abrindo o .zip…",
     converting: "Carregando arquivos do jogo… {{done}} / {{total}}",
+    resuming: "A importação parou. Retomando…",
     verifying: "Importação concluída. Verificando arquivos…",
     complete: "Importação concluída. Pronto para jogar.",
     verifyFailed: "A verificação falhou: {{reason}}",
   },
   errors: {
     generic: "Erro: {{message}}",
-    worker: "Erro do worker: {{message}}",
     serviceWorker: "Erro do Service Worker: {{message}}",
     apis: "Seu navegador não suporta as APIs necessárias (OPFS / Service Worker). Use Chrome, Firefox ou Safari 15.2+.",
     missingFeatures:
@@ -49,6 +49,7 @@ export default {
     zip: "Não foi possível ler este .zip. Ele pode estar corrompido ou ter senha. Tente com a pasta do jogo.",
     notZip: "Só funcionam a pasta do jogo ou um .zip. Descompacte .rar ou .7z antes.",
     storage: "Não há espaço livre suficiente. O jogo precisa de cerca de 1,2 GB neste navegador.",
+    stalled: "A importação continua parando. Deixe esta aba aberta e em primeiro plano, recarregue a página e tente de novo.",
     mismatch: "{{count}} arquivos diferem da versão de PC testada. O jogo pode não funcionar bem.",
     scriptLoad:
       "Não foi possível carregar um arquivo necessário ({{file}}). Recarregue a página com Ctrl/Cmd + Shift + R. Seus jogos salvos e os arquivos do jogo não foram afetados.",

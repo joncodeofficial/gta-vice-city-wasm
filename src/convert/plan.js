@@ -5,6 +5,7 @@ import {
   decodeAdf,
   decodeWav,
   encodeMp3,
+  nearestMp3Rate,
   parseImgDir,
   parseSdt,
   patchSdtRates,
@@ -59,7 +60,8 @@ export async function validateInstall(index, hash) {
 }
 
 // emit(kind, path, bytes) with kind "data" (package) or "fetched".
-export async function convertInstall({ source, index, readRevcFile, emit, onProgress }) {
+// skipFetched: fetched files already written by an interrupted import.
+export async function convertInstall({ source, index, readRevcFile, emit, onProgress, skipFetched = 0 }) {
   const real = (p) => {
     const r = index.get(p);
     if (!r) throw new Error(`missing file in the game folder: ${p}`);
@@ -86,15 +88,22 @@ export async function convertInstall({ source, index, readRevcFile, emit, onProg
   let done = 0;
   const tick = () => onProgress?.(++done, total);
 
-  // First, so sfx.sdt gets the encoded rates.
-  const rates = [];
+  // Fetched files always come in the same order, so a resumed import skips
+  // the first ones without doing their work.
+  let fetchedCount = 0;
+  const fetched = async (path, produce) => {
+    if (fetchedCount++ >= skipFetched) await emit("fetched", path, await produce());
+    tick();
+  };
+
+  // The rates encodeMp3 will use, for the patched sfx.sdt.
+  const rates = sfx.map((e) => nearestMp3Rate(e.rate));
   const sfxRaw = real("audio/sfx.raw");
   for (let n = 0; n < sfx.length; n++) {
     const { offset, size, rate } = sfx[n];
-    const mp3 = encodeMp3(pcm16(await source.readRange(sfxRaw, offset, size)), rate);
-    rates.push(mp3.rate);
-    await emit("fetched", `audio/sfx.raw/${n}.mp3`, mp3.bytes);
-    tick();
+    await fetched(`audio/sfx.raw/${n}.mp3`, async () =>
+      encodeMp3(pcm16(await source.readRange(sfxRaw, offset, size)), rate).bytes,
+    );
   }
 
   for (const p of manifest.dataFiles) {
@@ -109,21 +118,17 @@ export async function convertInstall({ source, index, readRevcFile, emit, onProg
   }
 
   for (const p of fetchedImg) {
-    await emit("fetched", p, await readImgEntry(imgEntries.get(p)));
-    tick();
+    await fetched(p, () => readImgEntry(imgEntries.get(p)));
   }
 
   for (const p of audio) {
-    const bytes = await source.read(real(p));
-    if (p.endsWith(".adf")) {
-      await emit("fetched", p, decodeAdf(bytes));
-    } else if (p.endsWith(".wav")) {
+    await fetched(p, async () => {
+      const bytes = await source.read(real(p));
+      if (p.endsWith(".adf")) return decodeAdf(bytes);
+      if (!p.endsWith(".wav")) return bytes;
       // The engine only decodes MP3, but asks for the .wav name.
       const { rate, samples } = decodeWav(bytes);
-      await emit("fetched", p, encodeMp3(samples, rate).bytes);
-    } else {
-      await emit("fetched", p, bytes);
-    }
-    tick();
+      return encodeMp3(samples, rate).bytes;
+    });
   }
 }

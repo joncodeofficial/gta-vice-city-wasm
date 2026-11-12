@@ -12,6 +12,8 @@ export const GAME_ENTRIES = [
   ...new Set([READY_MARKER, PACKAGE_DATA, PACKAGE_INDEX, FETCHED_DIR].map((p) => p.split("/")[0])),
 ];
 export const IMPORT_TMP = "_import_tmp";
+// How far an interrupted import got, to resume it.
+export const IMPORT_JOURNAL = "_import_journal";
 
 // Byte ranges of each file in PACKAGE_DATA, as the loader reads them.
 export function createPackageIndex() {
