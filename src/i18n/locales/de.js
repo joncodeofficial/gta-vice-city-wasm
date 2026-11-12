@@ -70,7 +70,6 @@ export default {
   loader: {
     downloading: "Wird heruntergeladen...",
     downloadingPercent: "Wird heruntergeladen: {{percent}} %",
-    clickToContinue: "Zum Fortfahren klicken...",
     webglLost: "WebGL-Kontext verloren. Bitte lade die Seite neu.",
   },
   saves: {

@@ -68,7 +68,6 @@ export default {
   loader: {
     downloading: "正在下载...",
     downloadingPercent: "正在下载 {{percent}}%",
-    clickToContinue: "点击继续...",
     webglLost: "WebGL 上下文丢失，请重新加载页面。",
   },
   saves: {

@@ -963,18 +963,7 @@ select:focus {
   accent-color: rgb(255, 255, 192);
 }
 
-.intro {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  background-color: black;
-}
-
-.intro-container {
+.loading-screen {
   position: absolute;
   top: 0;
   left: 0;
@@ -982,6 +971,7 @@ select:focus {
   height: 100%;
   /* above the page (20) and the background grid (0), below the touch controls (100) */
   z-index: 50;
+  background-color: black;
 }
 
 .loader-container {

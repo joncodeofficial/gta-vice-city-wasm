@@ -70,7 +70,6 @@ export default {
   loader: {
     downloading: "डाउनलोड हो रहा है...",
     downloadingPercent: "डाउनलोड हो रहा है {{percent}}%",
-    clickToContinue: "जारी रखने के लिए क्लिक करें...",
     webglLost: "WebGL कॉन्टेक्स्ट खो गया। कृपया पेज रीलोड करें।",
   },
   saves: {
