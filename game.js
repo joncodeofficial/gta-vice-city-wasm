@@ -115,31 +115,15 @@ async function startGame(e) {
     document.querySelector('.disclaimer').style.display = 'none';
     document.querySelector('.developed-by').style.display = 'none';
 
-    const intro = document.querySelector('.intro');
-    const introContainer = document.querySelector('.intro-container');
-    const loaderContainer = document.querySelector('.loader-container');
+    const loadingScreen = document.querySelector('.loading-screen');
     document.querySelector('.click-to-play').style.display = 'none';
-    loaderContainer.style.display = "flex";
-    introContainer.hidden = false;
-    intro.play();
+    document.querySelector('.loader-container').style.display = "flex";
+    loadingScreen.hidden = false;
 
     await window.vcUserData?.prepareLaunch();
     const dataBuffer = await loadData();
-    spinnerElement.hidden = true;
-    setStatus(t("loader.clickToContinue"));
-    introContainer.hidden = false;
-    introContainer.style.cursor = 'pointer';
-    const clickHandler = () => {
-        resumeAudioContexts();
-        intro.pause();
-        introContainer.style.display = 'none';
-        loadGame(dataBuffer);
-    };
-    if (isMobile) {
-        window.addEventListener('pointerup', clickHandler, { once: true });
-    } else {
-        window.addEventListener('click', clickHandler, { once: true });
-    }
+    loadingScreen.hidden = true;
+    loadGame(dataBuffer);
 }
 
 function setStatus(text) {
