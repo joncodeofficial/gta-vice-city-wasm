@@ -6,7 +6,7 @@ Play GTA: Vice City right in your browser. Nothing to install: the game runs on 
 
 ![GTA: Vice City running in the browser, with a custom Spider-Man skin](public/demo.webp)
 
-You need the game files (`game.tar.gz`) from your own copy of the game — see [How it works](#how-it-works). They are not provided here.
+You need GTA: Vice City for PC installed on your computer — see [How it works](#how-it-works). Game files are not provided here.
 
 ## What's included
 
@@ -20,12 +20,14 @@ You need the game files (`game.tar.gz`) from your own copy of the game — see [
 
 ## How it works
 
-1. Get `game.tar.gz` from your own legally owned copy of the game (this project does not host or distribute game files)
-2. Open the [live page](https://joncodeofficial.github.io/gta-vice-city-wasm/) and click **Select game.tar.gz** to import the file
-3. The archive is extracted into your browser's local storage (OPFS) — this only happens once
+1. Install GTA: Vice City for PC from your own copy (Steam, Rockstar Games Launcher or the original discs)
+2. Open the [live page](https://joncodeofficial.github.io/gta-vice-city-wasm/) and drag the folder where the game is installed onto **Game files (PC)**. You can also click it and choose a `.zip` of that folder (the way to do it on a phone)
+3. The game loads into your browser's local storage (OPFS). It takes a few minutes and only happens once. Nothing is uploaded
 4. Click **Start to play** and the game loads entirely from your device
 
 Your imported data persists between sessions so you only need to import once unless you clear browser storage.
+
+The site only hosts the engine (`public/engine/`) and a few files from the reVC project (`public/revc/`), such as controller button icons and `revc.ini`. Everything from the game comes from your own install.
 
 ## Saves & skins
 
@@ -49,7 +51,7 @@ If your download is a `.rar` or `.7z`, unpack it first. *Reset game data* also d
 
 - A modern desktop browser with WebAssembly + OPFS + Service Worker support
 - Recommended: Chrome 110+, Firefox 111+, or Safari 16.4+
-- The `game.tar.gz` game archive (~668 MB compressed)
+- GTA: Vice City for PC installed (about 1.5 GB), and about 1.2 GB of free browser storage for the converted game
 
 ## Running locally
 
@@ -60,13 +62,19 @@ pnpm dev
 
 Then open `http://localhost:5173`.
 
+To test the conversion outside the browser, run it on an install folder:
+
+```bash
+node scripts/convert-pc.mjs "<path to GTA Vice City>" out/
+```
+
 ## Tech stack
 
 - **Vite** — dev server and build tool
 - **WebAssembly** — game engine compiled from C++ via Emscripten
-- **OPFS** (Origin Private File System) — stores extracted game data locally in the browser
+- **OPFS** (Origin Private File System) — stores the converted game data locally in the browser
 - **Service Worker** — intercepts fetch requests to serve game files from OPFS
-- **Web Worker** — extracts the `.tar.gz` archive off the main thread
+- **Web Worker** — converts the game install off the main thread (`src/convert/`, MP3 encoding with [lamejs](https://github.com/zhuker/lamejs))
 
 ## Credits
 
